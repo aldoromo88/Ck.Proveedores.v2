@@ -5,9 +5,10 @@ import Vuetify from 'vuetify';
 import store from '@/store';
 import App from './App';
 import router from './router';
-import proxyHelpers from '@/helpers/proxy'
-
+import proxyHelpers from '@/helpers/proxy';
+import '@/widgets';
 import 'vuetify/dist/vuetify.css';
+
 
 Vue.use(Vuetify);
 Vue.use(proxyHelpers);

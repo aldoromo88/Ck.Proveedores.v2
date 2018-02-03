@@ -21,21 +21,21 @@
 		</v-toolbar>
 		<v-list class="pt-0" dense>
 			<v-divider></v-divider>
-			<v-list-group v-for="item in items" :value="item.active" v-bind:key="item.title">
-				<v-list-tile slot="item" :to="{path:item.path}">
+			<v-list-group v-for="item in items" :value="item.active" v-bind:key="item.name">
+				<v-list-tile slot="item" :to="{path:item.pageName}">
 					<v-list-tile-action>
-						<v-icon>{{ item.icon }}</v-icon>
+						<v-icon >{{ item.imageUrl }}</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>{{ item.title }}</v-list-tile-title>
+						<v-list-tile-title>{{ resources[item.name] }}</v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
-				<v-list-tile v-for="subItem in item.items" :key="subItem.title" :to="{path:subItem.path}">
+				<v-list-tile v-for="subItem in item.sub" :key="subItem.title" :to="{path:subItem.pageName}">
 					<v-list-tile-action>
-						<v-icon>{{ subItem.icon }}</v-icon>
+						<v-icon>{{ subItem.imageUrl }}</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
+						<v-list-tile-title>{{ resources[subItem.name] }}</v-list-tile-title>
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-list-group>
@@ -60,11 +60,11 @@
 	</v-toolbar>
 
 	<v-content style="margin-top:70px">
-		<v-container fluid fill-height>
+
 			<v-slide-y-transition mode="out-in">
 				<router-view></router-view>
 			</v-slide-y-transition>
-		</v-container>
+
 	</v-content>
 	<v-footer app>
 		<span>&copy; 2018</span>
@@ -90,6 +90,8 @@ export default {
 			return shellResources[this.$store.getters.Lenguage];
 		},
 		items() {
+
+			return this.$store.getters.Menu;
 			return [{
 					title: this.resources.releases,
 					icon: 'dashboard',
@@ -133,3 +135,19 @@ export default {
 	}
 }
 </script>
+<style>
+table.table thead td:not(:nth-child(1)),
+table.table tbody td:not(:nth-child(1)),
+table.table thead th:not(:nth-child(1)),
+table.table tbody th:not(:nth-child(1)),
+table.table thead td:first-child,
+table.table tbody td:first-child,
+table.table thead th:first-child,
+table.table tbody th:first-child {
+	padding: 0!important
+}
+
+table.table tbody td, table.table tbody th {
+    height: 25px!important;
+}
+</style>

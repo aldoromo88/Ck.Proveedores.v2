@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -9,11 +8,15 @@ export default new Vuex.Store({
 	//getters,
 	state: {
 		Lenguage: '',
-		IsLoading: false
+		IsLoading: false,
+		User: null,
+		Menu: []
 	},
 	getters: {
 		Lenguage: (state) => state.Lenguage,
-		IsLoading: (state) => state.IsLoading
+		IsLoading: (state) => state.IsLoading,
+		Menu: (state) => state.Menu,
+		User: (state) => state.User
 	},
 	mutations: {
 		'LENGUAGE_CHANGED' (state, lenguage) {
@@ -21,6 +24,12 @@ export default new Vuex.Store({
 		},
 		'IS_LOADING_GHANGED' (state, isLoading) {
 			state.IsLoading = isLoading;
+		},
+		'MENU_CHANGED' (state, menu) {
+			state.Menu = menu;
+		},
+		'USER_CHANGED' (state, user) {
+			state.User = user;
 		}
 	}
 });

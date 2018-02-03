@@ -1,3 +1,3 @@
-export function required(message){
-  return (v)=>!!v||message;
+export function required (message) {
+	return (v) => !!v || message;
 }

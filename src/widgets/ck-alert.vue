@@ -1,10 +1,11 @@
-<tempalte>
+<template>
   <v-alert :type="type" v-model="showFeedback" dismissible transition="scale-transition">
     {{message}}
   </v-alert>
-</tempalte>
+</template>
 <script>
 export default {
+	name: 'ck-alert',
 	props: ['type', 'message'],
 	computed: {
 		showFeedback: {
