@@ -1,8 +1,6 @@
 <template>
 <v-container fluid>
 	<v-layout column>
-		<h1>{{resources.title}}</h1>
-
 		<v-form v-model="isMasterDataValid" ref="form" :lazy-validation="true">
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md5 lg3 order-sm1 order-lg1 pa-1 class="condense">
@@ -122,7 +120,7 @@ export default {
 		details() {
 			return this.detailsRaw.filter(
 				d => (!this.filter.partNumber || d.partNumber.toUpperCase().includes(this.filter.partNumber.toUpperCase())) &&
-				(!this.filter.purchaseOrder || (''+d.purchaseOrder).toUpperCase().includes(this.filter.purchaseOrder.toUpperCase()))
+				(!this.filter.purchaseOrder || ('' + d.purchaseOrder).toUpperCase().includes(this.filter.purchaseOrder.toUpperCase()))
 			);
 		}
 	},
@@ -173,6 +171,7 @@ export default {
 	},
 	mounted() {
 		this.$post('api/Common/GetPlants').then(d => this.facilities = d);
+		this.$store.commit('CHANGE_TITLE', this.resources.title);
 	}
 }
 </script>

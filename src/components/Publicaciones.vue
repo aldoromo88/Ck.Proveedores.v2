@@ -1,7 +1,6 @@
 <template>
 <v-container fluid>
 	<v-layout column>
-		<h1>{{resources.title}}</h1>
 		<v-layout row>
 			<v-flex xs5 sm4 md2>
 				<v-select v-bind:items="releaseTypes" v-model="selectedReleaseType" :label="resources.type" item-value="id" item-text="name"></v-select>
@@ -119,6 +118,7 @@ export default {
 	mounted() {
 		this.$post('api/Common/GetReleaseTypes').then(d => this.releaseTypesRaw = d);
 		this.$post('api/Transaction/GetAllEdiInfo').then(d => this.rawItems = d);
+		this.$store.commit('CHANGE_TITLE', this.resources.title);
 	},
 	components: {
 		PublicacionesDetalle

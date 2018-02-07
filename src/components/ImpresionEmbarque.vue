@@ -1,17 +1,15 @@
 <template>
 <v-container fluid>
 	<v-layout column>
-		<h1>{{resources.title}}</h1>
-
 		<v-form v-model="isMasterDataValid" ref="form" :lazy-validation="true">
 			<v-layout row wrap>
-				<v-flex xs12 sm6 md4 lg3 order-sm1 order-lg1 pa-1 class="condense">
+				<v-flex xs12 sm6 md4 lg3 pa-1 class="condense">
 					<v-select v-bind:items="facilities" v-model="facility" :label="resources.facility" item-value="idPlant" item-text="name"></v-select>
 				</v-flex>
-				<v-flex xs12 sm6 md4 lg3 order-sm3 order-lg2 pa-1 class="condense">
+				<v-flex xs12 sm6 md4 lg3 pa-1 class="condense">
 					<v-text-field v-model="invoice" :label="resources.invoice"></v-text-field>
 				</v-flex>
-				<v-flex xs12 sm6 md4 lg3 order-sm2 order-lg3 pa-1 d-inline-flex class="condense">
+				<v-flex xs12 sm6 md4 lg3 pa-1 d-inline-flex class="condense">
 					<v-select v-bind:items="resources.statuses" v-model="status" :label="resources.status" item-value="id" item-text="name" :rules="rules.status"></v-select>
 					<v-btn color="primary" class="inlineBtn" :disabled="!isMasterDataValid" @click="onSearchClick">
 						<v-icon class="pa-0">search</v-icon>
@@ -33,7 +31,7 @@
                <td>{{props.item.totalItem}}</td>
                <td>{{props.item.totalQuantity}}</td>
                <td>
-                 <v-btn @click="print(props.item.idShipping)">{{props.item.printStatus===1? resources.print: resources.reprint}}</v-btn>
+                 <v-btn @click="print(props.item)">{{props.item.printStatus===1? resources.print: resources.reprint}}</v-btn>
                  <v-btn @click="getPendingToShipDetail(props.item.idShipping)">{{resources.detail}}</v-btn>
                 </td>
 	           </tr>
@@ -136,8 +134,8 @@ export default {
 			this.dialog = true
 			this.$post('api/Transaction/GetShippingDetail', id).then(d => this.details = d);
 		},
-		print(idShiping) {
-			this.$get(`api/Transaction/GetPrintDocument?idShiping=${idShiping}`)
+		print(data) {
+			this.$get(`api/Transaction/GetPrintDocument?IdShiping=${data.idShiping}&idVendorEdiDetail=0`)
 				.then(d => {
 					const file = new File([d], "label.pdf", {
 						type: 'application/octet-stream'
@@ -148,6 +146,7 @@ export default {
 	},
 	mounted() {
 		this.$post('api/Common/GetPlants').then(d => this.facilitiesRaw = d);
+		this.$store.commit('CHANGE_TITLE', this.resources.title);
 	}
 }
 </script>

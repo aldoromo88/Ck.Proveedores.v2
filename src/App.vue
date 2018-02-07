@@ -1,7 +1,7 @@
 <template>
 <v-app>
 
-	<v-navigation-drawer fixed app clipped permanent :mini-variant.sync="mini" style="margin-top:70px">
+	<v-navigation-drawer fixed clipped app permanent :mini-variant.sync="mini" class="leftMenu" dark>
 		<v-toolbar v-if="user" flat class="transparent">
 			<v-list class="pa-0">
 				<v-list-tile avatar>
@@ -30,7 +30,7 @@
 						<v-icon>{{ item.imageUrl }}</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>{{ resources[item.name] }}</v-list-tile-title>
+						<v-list-tile-sub-title>{{ resources[item.name] }}</v-list-tile-sub-title>
 					</v-list-tile-content>
 				</v-list-tile>
 				<v-list-tile v-for="subItem in item.sub" :key="subItem.title" :to="{path:subItem.pageName}">
@@ -38,23 +38,23 @@
 						<v-icon>{{ subItem.imageUrl }}</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
-						<v-list-tile-title>{{ resources[subItem.name] }}</v-list-tile-title>
+						<v-list-tile-sub-title>{{ resources[subItem.name] }}</v-list-tile-sub-title>
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-list-group>
 		</v-list>
 	</v-navigation-drawer>
-	<v-toolbar fixed>
+	<v-toolbar class="topMenu" fixed app dark style="padding-left:0!important">
 		<v-toolbar-title>
 			<img src="/static/logo.png" alt="Calsonic Kansei" class="mt-3" />
 		</v-toolbar-title>
 		<v-spacer></v-spacer>
-		<v-menu :nudge-width="100">
+		<v-menu :nudge-width="100" dark>
 			<v-toolbar-title slot="activator">
 				<span>{{lenguage.name}}</span>
 				<v-icon dark>arrow_drop_down</v-icon>
 			</v-toolbar-title>
-			<v-list>
+			<v-list dark>
 				<v-list-tile v-for="lenguage in lenguages" :key="lenguage.id" @click="changeLenguage(lenguage.id)">
 					<v-list-tile-title v-text="lenguage.name"></v-list-tile-title>
 				</v-list-tile>
@@ -62,8 +62,9 @@
 		</v-menu>
 	</v-toolbar>
 
-	<v-content style="margin-top:70px">
+	<v-content>
 
+		<h1 class="titleBar"> {{title}}</h1>
 		<v-slide-y-transition mode="out-in">
 			<router-view></router-view>
 		</v-slide-y-transition>
@@ -103,6 +104,9 @@ export default {
 			return str.replace(/\w\S*/g, function (txt) {
 				return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 			})
+		},
+		title(){
+			return this.$store.getters.Title;
 		}
 	},
 	methods: {
@@ -136,5 +140,27 @@ table.table tbody th:first-child {
 table.table tbody td,
 table.table tbody th {
 	height: 25px!important;
+}
+
+.leftMenu {
+	background-color: #4c505d!important;
+	border-right: 1px solid #656877!important;
+}
+
+.topMenu {
+	background-color: #050505!important;
+}
+
+.list__tile--active {
+	color: red!important
+}
+
+h1 {
+	color: #0072c6;
+}
+
+.titleBar{
+	padding-left: 16px;
+	background-color: #3d404a;
 }
 </style>

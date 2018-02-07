@@ -10,13 +10,15 @@ export default new Vuex.Store({
 		Lenguage: '',
 		IsLoading: false,
 		User: null,
-		Menu: []
+		Menu: [],
+		Title: ''
 	},
 	getters: {
 		Lenguage: (state) => state.Lenguage,
 		IsLoading: (state) => state.IsLoading,
 		Menu: (state) => state.Menu,
-		User: (state) => state.User
+		User: (state) => state.User,
+		Title: (state) => state.Title
 	},
 	mutations: {
 		'LENGUAGE_CHANGED' (state, lenguage) {
@@ -30,6 +32,9 @@ export default new Vuex.Store({
 		},
 		'USER_CHANGED' (state, user) {
 			state.User = user;
+		},
+		'CHANGE_TITLE' (state, title) {
+			state.Title = title;
 		}
 	}
 });
