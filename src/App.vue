@@ -11,8 +11,8 @@
 					<v-list-tile-content>
 						<v-list-tile-title>
 							<div style="white-space: pre-wrap;">{{userName}}</div>
-							<div style="white-space: pre-wrap;">{{user.IdUser}}</div>
 						</v-list-tile-title>
+						<v-list-tile-sub-title>{{user.IdUser}}</v-list-tile-sub-title>
 					</v-list-tile-content>
 					<v-list-tile-action>
 						<v-btn icon @click.native.stop="mini = !mini">
