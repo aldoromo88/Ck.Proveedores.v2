@@ -2,14 +2,17 @@
 <v-app>
 
 	<v-navigation-drawer fixed app clipped permanent :mini-variant.sync="mini" style="margin-top:70px">
-		<v-toolbar flat class="transparent">
+		<v-toolbar v-if="user" flat class="transparent">
 			<v-list class="pa-0">
 				<v-list-tile avatar>
 					<v-list-tile-avatar>
 						<img src="https://randomuser.me/api/portraits/men/85.jpg" />
 					</v-list-tile-avatar>
 					<v-list-tile-content>
-						<v-list-tile-title>John Leider</v-list-tile-title>
+						<v-list-tile-title>
+							<div style="white-space: pre-wrap;">{{userName}}</div>
+							<div style="white-space: pre-wrap;">{{user.IdUser}}</div>
+						</v-list-tile-title>
 					</v-list-tile-content>
 					<v-list-tile-action>
 						<v-btn icon @click.native.stop="mini = !mini">
@@ -24,7 +27,7 @@
 			<v-list-group v-for="item in items" :value="item.active" v-bind:key="item.name">
 				<v-list-tile slot="item" :to="{path:item.pageName}">
 					<v-list-tile-action>
-						<v-icon >{{ item.imageUrl }}</v-icon>
+						<v-icon>{{ item.imageUrl }}</v-icon>
 					</v-list-tile-action>
 					<v-list-tile-content>
 						<v-list-tile-title>{{ resources[item.name] }}</v-list-tile-title>
@@ -61,9 +64,9 @@
 
 	<v-content style="margin-top:70px">
 
-			<v-slide-y-transition mode="out-in">
-				<router-view></router-view>
-			</v-slide-y-transition>
+		<v-slide-y-transition mode="out-in">
+			<router-view></router-view>
+		</v-slide-y-transition>
 
 	</v-content>
 	<v-footer app>
@@ -90,33 +93,16 @@ export default {
 			return shellResources[this.$store.getters.Lenguage];
 		},
 		items() {
-
 			return this.$store.getters.Menu;
-			return [{
-					title: this.resources.releases,
-					icon: 'dashboard',
-					active: false,
-					path: '/releases',
-				},
-				{
-					title: this.resources.shipments,
-					icon: 'airport_shuttle',
-					active: false,
-					items: [{
-							title: this.resources.newCapture,
-							icon: 'note_add',
-							active: false,
-							path: '/shipments/new',
-						},
-						{
-							title: this.resources.print,
-							icon: 'print',
-							active: false,
-							path: '/shipments/print',
-						},
-					]
-				}
-			]
+		},
+		user() {
+			return this.$store.getters.User;
+		},
+		userName() {
+			const str = this.user.Name;
+			return str.replace(/\w\S*/g, function (txt) {
+				return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+			})
 		}
 	},
 	methods: {
@@ -147,7 +133,8 @@ table.table tbody th:first-child {
 	padding: 0!important
 }
 
-table.table tbody td, table.table tbody th {
-    height: 25px!important;
+table.table tbody td,
+table.table tbody th {
+	height: 25px!important;
 }
 </style>

@@ -14,6 +14,9 @@ export default{
 		purchaseOrder: 'Purchase Order',
 		partNumber: '# Part',
 		filter: 'Filter',
+		'MESSAGES.REQUEST_SUCCESS': 'Shippment created successfully',
+		'MESSAGE.ERROR_DB': 'Error on data base while creating shippment',
+		'MESSAGE.ERROR_API': 'Error on server while creating shippment',
 		rules: {
 			deliveryDate: 'Tentative delivery date is required',
 			shipmentDate: 'Shipment date is required',
@@ -46,6 +49,9 @@ export default{
 		purchaseOrder: 'Orden de Compra',
 		partNumber: '# Parte',
 		filter: 'Filtro',
+		'MESSAGES.REQUEST_SUCCESS': 'Embarque creado correctamente',
+		'MESSAGE.ERROR_DB': 'Error en base de datos al crear embarque',
+		'MESSAGE.ERROR_API': 'Error en servidor al crear embarque',
 		rules: {
 			deliveryDate: 'Fecha tentativa de entrega es requerida',
 			shipmentDate: 'Fecha de embarque es requerida',

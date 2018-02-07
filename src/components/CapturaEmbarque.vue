@@ -56,6 +56,7 @@
 	           </tr>
 	         </template>
 					</v-data-table>
+					<ck-alert :type="feedbackType" :message="feedbackMessage" @close="()=>feedbackMessage = null"></ck-alert>
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
@@ -73,6 +74,7 @@
 					</v-btn>
 				</v-card-actions>
 			</v-card>
+
 		</transition-group>
 	</v-layout>
 </v-container>
@@ -95,6 +97,8 @@ export default {
 			facility: null,
 			detailsRaw: [],
 			filter: {},
+			feedbackType: 'error',
+			feedbackMessage: null
 		}
 	},
 	computed: {
@@ -118,7 +122,7 @@ export default {
 		details() {
 			return this.detailsRaw.filter(
 				d => (!this.filter.partNumber || d.partNumber.toUpperCase().includes(this.filter.partNumber.toUpperCase())) &&
-				(!this.filter.purchaseOrder || d.purchaseOrder.toUpperCase().includes(this.filter.purchaseOrder.toUpperCase()))
+				(!this.filter.purchaseOrder || (''+d.purchaseOrder).toUpperCase().includes(this.filter.purchaseOrder.toUpperCase()))
 			);
 		}
 	},
@@ -161,6 +165,8 @@ export default {
 
 			this.$post('api/Transaction/CreateShipping', data)
 				.then(d => {
+					this.feedbackType = d.hasError ? 'error' : 'success';
+					this.feedbackMessage = this.resources[d.message];
 					this.getDetail();
 				});
 		}

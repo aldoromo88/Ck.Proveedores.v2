@@ -15,11 +15,7 @@
 					</v-form>
 				</v-card-text>
 			</v-card>
-
-
-
 		</v-flex>
-
 	</v-layout>
 </v-container>
 </template>

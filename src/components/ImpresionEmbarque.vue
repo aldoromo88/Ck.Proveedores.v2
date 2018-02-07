@@ -6,7 +6,7 @@
 		<v-form v-model="isMasterDataValid" ref="form" :lazy-validation="true">
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md4 lg3 order-sm1 order-lg1 pa-1 class="condense">
-					<v-select v-bind:items="facilities" v-model="facility" :label="resources.facility" item-value="idPlant" item-text="name" :disabled="isDetailOpen"></v-select>
+					<v-select v-bind:items="facilities" v-model="facility" :label="resources.facility" item-value="idPlant" item-text="name"></v-select>
 				</v-flex>
 				<v-flex xs12 sm6 md4 lg3 order-sm3 order-lg2 pa-1 class="condense">
 					<v-text-field v-model="invoice" :label="resources.invoice"></v-text-field>
@@ -71,6 +71,7 @@
 </template>
 <script>
 import resources from '@/lenguagesResources/impresionEmbarque';
+import commonResources from '@/lenguagesResources/commons'
 import fileSaver from 'file-saver';
 import {
 	required
@@ -82,8 +83,8 @@ export default {
 			isMasterDataValid: true,
 			isDetailOpen: false,
 			invoice: null,
-			facilities: [],
-			facility: null,
+			facilitiesRaw: [],
+			facility: 0,
 			resultsRaw: [],
 			status: null,
 			detailsRaw: [],
@@ -101,7 +102,9 @@ export default {
 			if (!this.$store.getters.Lenguage) {
 				return {}
 			}
-			return resources[this.$store.getters.Lenguage];
+			const r = resources[this.$store.getters.Lenguage];
+			r.common = commonResources[this.$store.getters.Lenguage];
+			return r;
 		},
 		headers() {
 			return this.resources.headers || []
@@ -109,10 +112,13 @@ export default {
 		detailHeaders() {
 			return this.resources.detailHeaders || []
 		},
+		facilities(){
+			return [{idPlant:0,name:this.resources.common.all}].concat(this.facilitiesRaw);
+		},
 		results() {
 			return this.resultsRaw.filter(
-				d => (!this.facility || d.idPlant === this.facility) &&
-				(!this.status || d.printStatus === this.status)
+				d => (this.facility === 0 || d.idPlant === this.facility) &&
+				(d.printStatus === this.status)
 			);
 		}
 	},
@@ -141,7 +147,7 @@ export default {
 		}
 	},
 	mounted() {
-		this.$post('api/Common/GetPlants').then(d => this.facilities = d);
+		this.$post('api/Common/GetPlants').then(d => this.facilitiesRaw = d);
 	}
 }
 </script>

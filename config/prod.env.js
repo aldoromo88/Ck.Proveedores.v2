@@ -1,4 +1,5 @@
-'use strict'
+'use strict';
 module.exports = {
-  NODE_ENV: '"production"'
-}
+	API_URL: '"http://ckmxdevag03:1234/"',
+	NODE_ENV: '"production"'
+};

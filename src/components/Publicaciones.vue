@@ -60,7 +60,7 @@ export default {
 				return {}
 			}
 			const r = resources[this.$store.getters.Lenguage];
-			r.common = commonResources[this.$store.getters.Lenguage]
+			r.common = commonResources[this.$store.getters.Lenguage];
 			return r;
 		},
 		releaseTypes() {
@@ -87,7 +87,7 @@ export default {
 		},
 		items() {
 			return this.rawItems.filter(i =>
-				(this.selectedReleaseType == 0 || this.selectedReleaseType == i.ediType) &&
+				(this.selectedReleaseType == 0 || this.selectedReleaseType == i.idEdiType) &&
 				(this.selectedStatus == 0 || this.selectedStatus == i.status)
 			)
 		}
