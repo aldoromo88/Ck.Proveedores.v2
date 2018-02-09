@@ -5,26 +5,7 @@
 		<v-data-table :headers="headers" :items="items" :rows-per-page-items="[-1]">
 			<template slot="items" slot-scope="props">
            <tr class="compact">
-             <td v-if="props.item.controlNumber!==null">{{props.item.controlNumber}}</td>
-             <td v-if="props.item.facilityCode!==null">{{props.item.facilityCode}}</td>
-             <td v-if="props.item.warehouseCode!==null">{{props.item.warehouseCode}}</td>
-             <td v-if="props.item.vendorCode!==null">{{props.item.vendorCode}}</td>
-             <td v-if="props.item.releaseNumber!==null">{{props.item.releaseNumber}}</td>
-             <td v-if="props.item.generationDate!==null">{{props.item.generationDate}}</td>
-             <td v-if="props.item.generationTime!==null">{{props.item.generationTime}}</td>
-             <td v-if="props.item.partNumber!==null">{{props.item.partNumber}}</td>
-             <td v-if="props.item.description!==null">{{props.item.description}}</td>
-             <td v-if="props.item.requiredQuantity!==null">{{props.item.requiredQuantity}}</td>
-             <td v-if="props.item.snp!==null">{{props.item.snp}}</td>
-             <td v-if="props.item.requiredDate!==null">{{props.item.requiredDate}}</td>
-             <td v-if="props.item.unitOfMeasure!==null">{{props.item.unitOfMeasure}}</td>
-             <td v-if="props.item.ran!==null">{{props.item.ran}}</td>
-             <td v-if="props.item.purchaseOrder!==null">{{props.item.purchaseOrder}}</td>
-             <td v-if="props.item.line!==null">{{props.item.line}}</td>
-             <td v-if="props.item.transitQuantity!==null">{{props.item.transitQuantity}}</td>
-             <td v-if="props.item.confirmedQuantity!==null">{{props.item.confirmedQuantity}}</td>
-             <td v-if="props.item.differenceQuantity!==null">{{props.item.differenceQuantity}}</td>
-             <td v-if="props.item.error!==null">{{props.item.error}}</td>
+						 <td v-for="h in headers" v-if="props.item[h.value]!==null">{{props.item[h.value]}} </td>
            </tr>
          </template>
 		</v-data-table>
