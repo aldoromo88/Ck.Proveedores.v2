@@ -135,7 +135,7 @@ export default {
 			this.$post('api/Transaction/GetShippingDetail', id).then(d => this.details = d);
 		},
 		print(data) {
-			this.$get(`api/Transaction/GetPrintDocument?IdShiping=${data.idShiping}&idVendorEdiDetail=0`)
+			this.$downloadFile(`api/Transaction/GetPrintDocument?IdShiping=${data.idShiping}&idVendorEdiDetail=0`)
 				.then(d => {
 					const file = new File([d], "label.pdf", {
 						type: 'application/octet-stream'
