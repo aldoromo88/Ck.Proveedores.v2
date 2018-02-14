@@ -4,10 +4,10 @@
 	<v-card-text>
 		<v-data-table :headers="headers" :items="items" :rows-per-page-items="[-1]">
 			<template slot="items" slot-scope="props">
-           <tr class="compact">
-						 <td v-for="h in headers" v-if="props.item[h.value]!==null">{{props.item[h.value]}} </td>
-           </tr>
-         </template>
+         <tr class="compact">
+					 <td v-for="h in headers" v-if="props.item[h.value]!==null">{{props.item[h.value]}} </td>
+         </tr>
+       </template>
 		</v-data-table>
 	</v-card-text>
 	<v-card-actions>

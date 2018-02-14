@@ -44,17 +44,12 @@
 			<v-card>
 				<v-card-title class="headline">{{resources.shipmentDetail}}</v-card-title>
 				<v-card-text>
-					<v-data-table :headers="headers" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
+					<v-data-table :headers="detailHeaders" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
 						<template slot="items" slot-scope="props">
-					 <tr>
-					 	<td>{{props.item.releaseNumber}}</td>
-						<td>{{props.item.partNumber}}</td>
-						<td>{{props.item.description}}</td>
-						<td>{{props.item.purchaseOrder}}</td>
-						<td>{{props.item.line}}</td>
-						<td>{{props.item.snp}}</td>
-						<td>{{props.item.quantityToShip}}</td>
-					 </tr>
+						<tr>
+	 					 <td v-for="h in detailHeaders" v-if="props.item[h.value]!==null">{{props.item[h.value]}} </td>
+	          </tr>
+
 				 </template>
 					</v-data-table>
 				</v-card-text>
@@ -135,7 +130,7 @@ export default {
 			this.$post('api/Transaction/GetShippingDetail', id).then(d => this.details = d);
 		},
 		print(data) {
-			this.$downloadFile(`api/Transaction/GetPrintDocument?IdShiping=${data.idShiping}&idVendorEdiDetail=0`)
+			this.$downloadFile(`api/Transaction/GetPrintDocument?IdShiping=${data.idShiping}&IdShipingDetail=0`)
 				.then(d => {
 					const file = new File([d], "label.pdf", {
 						type: 'application/octet-stream'

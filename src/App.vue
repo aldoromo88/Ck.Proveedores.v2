@@ -4,10 +4,10 @@
 	<v-navigation-drawer fixed clipped app permanent :mini-variant.sync="mini" class="leftMenu" dark>
 		<v-toolbar v-if="user" flat class="transparent">
 			<v-list class="pa-0">
-				<v-list-tile avatar>
-					<v-list-tile-avatar>
+				<v-list-tile >
+					<!-- <v-list-tile-avatar>
 						<img src="https://randomuser.me/api/portraits/men/85.jpg" />
-					</v-list-tile-avatar>
+					</v-list-tile-avatar> -->
 					<v-list-tile-content>
 						<v-list-tile-title>
 							<div style="white-space: pre-wrap;">{{userName}}</div>

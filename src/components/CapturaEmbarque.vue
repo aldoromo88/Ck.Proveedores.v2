@@ -161,6 +161,12 @@ export default {
 				}))
 			}
 
+			if(!data.detail.length){
+				this.feedbackType = 'info'
+				this.feedbackMessage = this.resources.noQuantitySelected;
+				return;
+			}
+
 			this.$post('api/Transaction/CreateShipping', data)
 				.then(d => {
 					this.feedbackType = d.hasError ? 'error' : 'success';

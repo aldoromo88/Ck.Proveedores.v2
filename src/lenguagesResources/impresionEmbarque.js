@@ -56,8 +56,8 @@ export default{
 			{text: 'Cantidad a Embarcar', value: 'totalQuantity', align: 'left'}
 		],
 		detailHeaders: [
-			{text: '# Embarque', value: 'tentativeDeliveryDate', align: 'left'},
-			{text: 'Fecha de embarque', value: 'shippingDate', align: 'left'},
+			{text: '# Embarque', value: 'releaseNumber', align: 'left'},
+			{text: '# Parte', value: 'partNumber', align: 'left'},
 			{text: 'Descripción', value: 'description', align: 'left'},
 			{text: 'Orden de Compra', value: 'purchaseOrder', align: 'left'},
 			{text: 'Línea', value: 'line', align: 'left'},
