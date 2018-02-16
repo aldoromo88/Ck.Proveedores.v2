@@ -14,6 +14,7 @@ export default{
 		purchaseOrder: 'Purchase Order',
 		partNumber: '# Part',
 		noQuantitySelected: 'No quantity, please input at least one quantity bigger than 0',
+		noSnpSelected: 'All elements must have SNP bigger than 0',
 		filter: 'Filter',
 		'MESSAGES.REQUEST_SUCCESS': 'Shippment created successfully',
 		'MESSAGE.ERROR_DB': 'Error on data base while creating shippment',
@@ -34,6 +35,7 @@ export default{
 			{text: 'Transit Qty', value: 'transitQuantity', align: 'left'},
 			{text: 'Confirmed Qty', value: 'confirmedQuantity', align: 'left'},
 			{text: 'Difference Qty', value: 'pendingToShip', align: 'left'},
+			{text: 'SNP', value: 'snp', align: 'left'},
 			{text: 'Qty to Ship', value: 'quantityToShip', align: 'left'}
 		]
 	},
@@ -50,6 +52,7 @@ export default{
 		purchaseOrder: 'Orden de Compra',
 		partNumber: '# Parte',
 		noQuantitySelected: 'Sin cantidad, ingrese al menos una cantidad mayor que 0',
+		noSnpSelected: 'Todos los elementos deben tener SNP mayor que 0',
 		filter: 'Filtro',
 		'MESSAGES.REQUEST_SUCCESS': 'Embarque creado correctamente',
 		'MESSAGE.ERROR_DB': 'Error en base de datos al crear embarque',
@@ -70,6 +73,7 @@ export default{
 			{text: 'Ctd Tránsito', value: 'transitQuantity', align: 'left'},
 			{text: 'Ctd Confirmada', value: 'confirmedQuantity', align: 'left'},
 			{text: 'Ctd Diferencia', value: 'pendingToShip', align: 'left'},
+			{text: 'SNP', value: 'snp', align: 'left'},
 			{text: 'Ctd a Embarcar', value: 'quantityToShip', align: 'left'}
 		]
 	}

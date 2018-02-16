@@ -50,6 +50,7 @@
 							 <td>{{props.item.transitQuantity}}</td>
 							 <td>{{props.item.confirmedQuantity}}</td>
 							 <td>{{props.item.pendingToShip}}</td>
+							 <td><v-text-field v-model="props.item.snp" hide-details style="padding: 3px 0; width:80px"></v-text-field></td>
 							 <td><v-text-field v-model="props.item.quantityToShip" hide-details style="padding: 3px 0; width:80px"></v-text-field></td>
 	           </tr>
 	         </template>
@@ -157,13 +158,18 @@ export default {
 				shippingTo: this.facility,
 				detail: this.detailsRaw.filter(d => parseInt(d.quantityToShip) > 0).map(d => ({
 					idVendorEdiDetail: d.idVendorEdiDetail,
+					snp: parseInt(d.snp),
 					quantity: parseInt(d.quantityToShip)
 				}))
 			}
 
-			if(!data.detail.length){
+			if (!data.detail.length) {
 				this.feedbackType = 'info'
 				this.feedbackMessage = this.resources.noQuantitySelected;
+				return;
+			} else if (data.detail.some(d => d.snp <= 0)) {
+				this.feedbackType = 'info'
+				this.feedbackMessage = this.resources.noSnpSelected;
 				return;
 			}
 
