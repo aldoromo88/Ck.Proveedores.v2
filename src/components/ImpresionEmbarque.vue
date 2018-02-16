@@ -11,7 +11,7 @@
 				</v-flex>
 				<v-flex xs12 sm6 md4 lg3 pa-1 d-inline-flex class="condense">
 					<v-select v-bind:items="resources.statuses" v-model="status" :label="resources.status" item-value="id" item-text="name" :rules="rules.status"></v-select>
-					<v-btn color="primary" class="inlineBtn" :disabled="!isMasterDataValid" @click="onSearchClick">
+					<v-btn :loading="isLoading" color="primary" class="inlineBtn" :disabled="!isMasterDataValid" @click="onSearchClick">
 						<v-icon class="pa-0">search</v-icon>
 					</v-btn>
 				</v-flex>
@@ -31,8 +31,8 @@
                <td>{{props.item.totalItem}}</td>
                <td>{{props.item.totalQuantity}}</td>
                <td>
-                 <v-btn @click="print(props.item)">{{props.item.printStatus===1? resources.print: resources.reprint}}</v-btn>
-                 <v-btn @click="getPendingToShipDetail(props.item.idShipping)">{{resources.detail}}</v-btn>
+                 <v-btn :loading="isLoading" @click="print(props.item)">{{props.item.printStatus===1? resources.print: resources.reprint}}</v-btn>
+                 <v-btn :loading="isLoading" @click="getPendingToShipDetail(props.item.idShipping)">{{resources.detail}}</v-btn>
                 </td>
 	           </tr>
 	         </template>
@@ -55,7 +55,7 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="green darken-1" dark small @click.native="dialog = false">{{resources.close}}</v-btn>
+					<v-btn :loading="isLoading" color="green darken-1" dark small @click.native="dialog = false">{{resources.close}}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>

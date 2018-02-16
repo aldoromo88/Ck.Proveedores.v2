@@ -11,7 +11,7 @@
 						<v-text-field :label="resources.password" v-model="password" :rules="passwordRules" validate-on-blur type="password"></v-text-field>
 						<p class="text-xs-right"><a href="#">{{resources.passwordRecovery}}</a></p>
 						<ck-alert :type="feedbackType" :message="feedbackMessage" @close="()=>feedbackMessage = null"></ck-alert>
-						<v-btn color="primary" @click="submit" :disabled="!valid">{{resources.login}}</v-btn>
+						<v-btn :loading="isLoading" color="primary" @click="submit" :disabled="!valid">{{resources.login}}</v-btn>
 					</v-form>
 				</v-card-text>
 			</v-card>

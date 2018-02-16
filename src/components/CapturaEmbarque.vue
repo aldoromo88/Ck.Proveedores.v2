@@ -14,7 +14,7 @@
 				</v-flex>
 				<v-flex xs12 sm6 md5 lg3 pa-1 order-sm4 order-lg4 d-inline-flex class="condense">
 					<v-text-field v-model="invoice" :label="resources.invoice" :rules="rules.invoice" validate-on-blur :disabled="isDetailOpen"></v-text-field>
-					<v-btn color="primary" class="inlineBtn" :disabled="!isMasterDataValid ||isDetailOpen " @click="onSearchClick">
+					<v-btn :loading="isLoading" color="primary" class="inlineBtn" :disabled="!isMasterDataValid ||isDetailOpen " @click="onSearchClick">
 						<v-icon class="pa-0">search</v-icon>
 					</v-btn>
 				</v-flex>
@@ -30,7 +30,7 @@
 				<v-flex sm6 md5 lg3 pa-1 d-inline-flex class="condense">
 
 					<v-text-field v-model="filter.purchaseOrder" :label="resources.purchaseOrder"></v-text-field>
-					<v-btn color="primary" class="inlineBtn" @click="clearFilter">
+					<v-btn :loading="isLoading" color="primary" class="inlineBtn" @click="clearFilter">
 						<v-icon class="pa-1">clear</v-icon>
 					</v-btn>
 				</v-flex>
@@ -59,16 +59,16 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="error" :disabled="!isMasterDataValid" @click="deleteShipment">
+					<v-btn :loading="isLoading" color="error" :disabled="!isMasterDataValid" @click="deleteShipment">
 						{{resources.cancelShipment}}
 					</v-btn>
-					<v-btn :disabled="!isMasterDataValid" @click="fillAll">
+					<v-btn :loading="isLoading" :disabled="!isMasterDataValid" @click="fillAll">
 						{{resources.fillAll}}
 					</v-btn>
-					<v-btn :disabled="!isMasterDataValid" @click="clearAll">
+					<v-btn :loading="isLoading" :disabled="!isMasterDataValid" @click="clearAll">
 						{{resources.clearAll}}
 					</v-btn>
-					<v-btn color="primary" :disabled="!isMasterDataValid" @click="createShipment">
+					<v-btn :loading="isLoading" color="primary" :disabled="!isMasterDataValid" @click="createShipment">
 						{{resources.createShipment}}
 					</v-btn>
 				</v-card-actions>

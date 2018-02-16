@@ -19,7 +19,7 @@
              <td>{{props.item.generationDate}}</td>
              <td><v-chip :color="props.item.status==1?'green':'gray'" small text-color="white">{{getStatusName(props.item.status)}}</v-chip> </td>
              <td>
-               <v-btn flat icon color="blue" @click.native.stop="loadDetail(props.item.idVendorEdi)">
+               <v-btn :loading="isLoading" flat icon color="blue" @click.native.stop="loadDetail(props.item.idVendorEdi)">
                  <v-icon>search</v-icon>
               </v-btn>
              </td>

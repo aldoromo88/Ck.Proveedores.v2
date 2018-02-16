@@ -24,6 +24,14 @@ Vue.use(Vuetify, {
 });
 Vue.use(proxyHelpers);
 
+Vue.mixin({
+	computed: {
+		isLoading () {
+			return this.$store.getters.IsLoading;
+		}
+	}
+});
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

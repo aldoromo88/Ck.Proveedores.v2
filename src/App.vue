@@ -4,7 +4,7 @@
 	<v-navigation-drawer fixed clipped app permanent :mini-variant.sync="mini" class="leftMenu" dark>
 		<v-toolbar v-if="user" flat class="transparent">
 			<v-list class="pa-0">
-				<v-list-tile >
+				<v-list-tile>
 					<!-- <v-list-tile-avatar>
 						<img src="https://randomuser.me/api/portraits/men/85.jpg" />
 					</v-list-tile-avatar> -->
@@ -15,7 +15,7 @@
 						<v-list-tile-sub-title>{{user.IdUser}}</v-list-tile-sub-title>
 					</v-list-tile-content>
 					<v-list-tile-action>
-						<v-btn icon @click.native.stop="mini = !mini">
+						<v-btn :loading="isLoading" icon @click.native.stop="mini = !mini">
 							<v-icon>chevron_left</v-icon>
 						</v-btn>
 					</v-list-tile-action>
@@ -65,6 +65,7 @@
 	<v-content>
 
 		<h1 class="titleBar"> {{title}}</h1>
+		<v-progress-linear v-show="isLoading" v-bind:indeterminate="true" class="pa-0 ma-0" style="position:absolute; height:4px"></v-progress-linear>
 		<v-slide-y-transition mode="out-in">
 			<router-view></router-view>
 		</v-slide-y-transition>
@@ -105,7 +106,7 @@ export default {
 				return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 			})
 		},
-		title(){
+		title() {
 			return this.$store.getters.Title;
 		}
 	},
@@ -159,7 +160,7 @@ h1 {
 	color: #0072c6;
 }
 
-.titleBar{
+.titleBar {
 	padding-left: 16px;
 	background-color: #3d404a;
 }
