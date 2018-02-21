@@ -9,7 +9,6 @@
 					<v-form v-model="valid" ref="form" :lazy-validation="true">
 						<v-text-field :label="resources.username" v-model="username" :rules="usernameRules" validate-on-blur autofocus></v-text-field>
 						<v-text-field :label="resources.password" v-model="password" :rules="passwordRules" validate-on-blur type="password"></v-text-field>
-						<p class="text-xs-right"><a href="#">{{resources.passwordRecovery}}</a></p>
 						<ck-alert :type="feedbackType" :message="feedbackMessage" @close="()=>feedbackMessage = null"></ck-alert>
 						<v-btn :loading="isLoading" color="primary" @click="submit" :disabled="!valid">{{resources.login}}</v-btn>
 					</v-form>

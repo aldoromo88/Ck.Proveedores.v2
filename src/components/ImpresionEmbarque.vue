@@ -58,7 +58,7 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn :loading="isLoading" color="green darken-1" dark small @click.native="dialog = false">{{resources.close}}</v-btn>
+					<v-btn :loading="isLoading" color="green darken-1" dark small @click.native="closeDetail">{{resources.close}}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -109,8 +109,11 @@ export default {
 		detailHeaders() {
 			return this.resources.detailHeaders || []
 		},
-		facilities(){
-			return [{idPlant:0,name:this.resources.common.all}].concat(this.facilitiesRaw);
+		facilities() {
+			return [{
+				idPlant: 0,
+				name: this.resources.common.all
+			}].concat(this.facilitiesRaw);
 		},
 		results() {
 			return this.resultsRaw.filter(
@@ -134,6 +137,10 @@ export default {
 			this.dialog = true
 			this.$post('api/Transaction/GetShippingDetail', id).then(d => this.details = d);
 		},
+		closeDetail() {
+			this.dialog = false;
+			this.getShippingByVendor();
+		},
 		print(data) {
 			this.$downloadFile(`api/Transaction/GetPrintDocument?IdShiping=${data.idShipping||this.idShipping}&IdShipingDetail=${data.idShippingDetail||0}`)
 				.then(d => {
@@ -142,7 +149,8 @@ export default {
 					});
 					fileSaver.saveAs(file);
 				});
-		}
+		},
+
 	},
 	mounted() {
 		this.$post('api/Common/GetPlants').then(d => this.facilitiesRaw = d);

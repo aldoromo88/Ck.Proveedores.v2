@@ -37,7 +37,7 @@ var authCheck = (to, from, next) => {
 };
 
 var router = new Router({
-	mode: 'history',
+	mode: 'hash',
 	scrollBehavior (to, from, savedPosition) {
 		if (savedPosition) {
 			return savedPosition;
