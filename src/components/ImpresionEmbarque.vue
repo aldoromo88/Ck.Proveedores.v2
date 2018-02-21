@@ -143,7 +143,10 @@ export default {
 		},
 		print(data) {
 			this.$downloadFile(`api/Transaction/GetPrintDocument?IdShiping=${data.idShipping||this.idShipping}&IdShipingDetail=${data.idShippingDetail||0}`)
-				.then(d => fileSaver.saveAs(d, 'label.pdf'));
+				.then(d => fileSaver.saveAs(d, 'label.pdf'))
+				.catch(e => {
+					console.log(e);
+				});
 		},
 
 	},

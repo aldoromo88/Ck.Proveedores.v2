@@ -84,7 +84,7 @@ export default {
 		},
 		downloadEdi() {
 			this.$get(`api/Transaction/GetEdiDocument?idVendorEdi=${this.idVendorEdi}`)
-				.then(d => fileSaver.saveAs(d, 'data.edi'));
+				.then(d => fileSaver.saveAs(d, 'data.edi'))
 				.catch(e => {
 					console.log(e);
 				});
