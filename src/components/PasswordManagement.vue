@@ -70,6 +70,9 @@ export default {
 				});
 			}
 		}
+	},
+	mounted() {
+		this.$store.commit('CHANGE_TITLE', this.resources.title);
 	}
 }
 </script>
