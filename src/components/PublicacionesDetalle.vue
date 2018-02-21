@@ -84,13 +84,8 @@ export default {
 		},
 		downloadEdi() {
 			this.$get(`api/Transaction/GetEdiDocument?idVendorEdi=${this.idVendorEdi}`)
-				.then(d => {
-					const file = new File([d], "data.edi", {
-						type: "data:text;charset=utf-8"
-					});
-					fileSaver.saveAs(file);
-				}).catch(e => {
-					debugger;
+				.then(d => fileSaver.saveAs(d, 'data.edi'));
+				.catch(e => {
 					console.log(e);
 				});
 		}

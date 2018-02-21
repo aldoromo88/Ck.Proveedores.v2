@@ -51,7 +51,6 @@ var router = new Router({
 		{path: '/releases', name: 'Publicaciones', component: Publicaciones, meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}},
 		{path: '/shipments/new', name: 'NuevoEmbarque', component: CapturaEmbarque, meta: {isPrivate: true, types: ['WEB', 'CON']}},
 		{path: '/shipments/print', name: 'ImpresionEmbarque', component: ImpresionEmbarque, meta: {isPrivate: true, types: ['WEB', 'CON']}},
-		{path: '/releases', name: 'Publicaciones', component: Publicaciones, meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}},
 		{path: '/passwrodChange', name: 'CambioContraseña', component: PasswordManagement, meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}},
 		{path: '/logout', meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}, beforeEnter: (to, from, next) => {
 			 auth.clearToken();
