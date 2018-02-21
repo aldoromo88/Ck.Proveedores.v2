@@ -7,6 +7,7 @@ const Login = (resolve) => require(['@/components/Login'], resolve);
 const Publicaciones = (resolve) => require(['@/components/Publicaciones'], resolve);
 const CapturaEmbarque = (resolve) => require(['@/components/CapturaEmbarque'], resolve);
 const ImpresionEmbarque = (resolve) => require(['@/components/ImpresionEmbarque'], resolve);
+const PasswordManagement = (resolve) => require(['@/components/PasswordManagement'], resolve);
 
 Vue.use(Router);
 
@@ -16,21 +17,22 @@ var authCheck = (to, from, next) => {
 		const user = store.getters.User;
 		const menu = store.getters.Menu;
 
-		if (to.meta.isPrivate) {
-			if (user) {
-				if (to.meta.types.indexOf(user.Type) != -1) {
-					next();
-				} else {
-					next(null); //Returns to previous page;
-				}
-	  }
-			else {
-				next({path: '/login', query: {redirect: to.fullPath}});
-	  }
+		if (!to.meta.isPrivate) { //Public page, just navigate to it
+			next();
+			return;
 		}
-		else {
-	    next(); // make sure to always call next()!
+
+		if (!user) { //No user, go to login
+			next({path: '/login', query: {redirect: to.fullPath}});
+			return;
 		}
+
+		if (to.meta.types.indexOf(user.Type) === -1) { //Invalid user type, cancel navigation
+			next(false);
+			return;
+		}
+
+		next();
 	});
 };
 
@@ -48,7 +50,13 @@ var router = new Router({
 		{path: '/', redirect: '/releases'},
 		{path: '/releases', name: 'Publicaciones', component: Publicaciones, meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}},
 		{path: '/shipments/new', name: 'NuevoEmbarque', component: CapturaEmbarque, meta: {isPrivate: true, types: ['WEB', 'CON']}},
-		{path: '/shipments/print', name: 'ImpresionEmbarque', component: ImpresionEmbarque, meta: {isPrivate: true, types: ['WEB', 'CON']}}
+		{path: '/shipments/print', name: 'ImpresionEmbarque', component: ImpresionEmbarque, meta: {isPrivate: true, types: ['WEB', 'CON']}},
+		{path: '/releases', name: 'Publicaciones', component: Publicaciones, meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}},
+		{path: '/passwrodChange', name: 'CambioContraseña', component: PasswordManagement, meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}},
+		{path: '/logout', meta: {isPrivate: true, types: ['WEB', 'VAN', 'CON']}, beforeEnter: (to, from, next) => {
+			 auth.clearToken();
+			 next('/login');
+		}}
 	]
 });
 

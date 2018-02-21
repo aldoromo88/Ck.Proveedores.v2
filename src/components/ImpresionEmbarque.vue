@@ -33,7 +33,7 @@
                <td>
                  <v-btn :loading="isLoading" @click="print(props.item)">{{props.item.printStatus===1? resources.print: resources.reprint}}</v-btn>
                  <v-btn :loading="isLoading" @click="getPendingToShipDetail(props.item.idShipping)">{{resources.detail}}</v-btn>
-                </td>
+               </td>
 	           </tr>
 	         </template>
 					</v-data-table>
@@ -48,8 +48,11 @@
 						<template slot="items" slot-scope="props">
 						<tr>
 	 					 <td v-for="h in detailHeaders" v-if="props.item[h.value]!==null">{{props.item[h.value]}} </td>
+						 <td>
+							 <!-- <v-btn :loading="isLoading" @click="print(props.item)">{{props.item.printStatus===1? resources.print: resources.reprint}}</v-btn> -->
+							 <v-btn :loading="isLoading" @click="print(props.item)">{{resources.print}}</v-btn>
+						 </td>
 	          </tr>
-
 				 </template>
 					</v-data-table>
 				</v-card-text>
@@ -82,7 +85,8 @@ export default {
 			status: null,
 			detailsRaw: [],
 			dialog: false,
-			details: []
+			details: [],
+			idShipping: 0
 		}
 	},
 	computed: {
@@ -126,11 +130,12 @@ export default {
 			this.$post('api/Transaction/GetShippingByVendor', this.status).then(d => this.resultsRaw = d);
 		},
 		getPendingToShipDetail(id) {
+			this.idShipping = id;
 			this.dialog = true
 			this.$post('api/Transaction/GetShippingDetail', id).then(d => this.details = d);
 		},
 		print(data) {
-			this.$downloadFile(`api/Transaction/GetPrintDocument?IdShiping=${data.idShiping}&IdShipingDetail=0`)
+			this.$downloadFile(`api/Transaction/GetPrintDocument?IdShiping=${data.idShipping||this.idShipping}&IdShipingDetail=${data.idShippingDetail||0}`)
 				.then(d => {
 					const file = new File([d], "label.pdf", {
 						type: 'application/octet-stream'

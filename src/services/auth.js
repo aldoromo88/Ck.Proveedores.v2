@@ -48,6 +48,7 @@ export default{
 	clearToken () {
 		axios.defaults.headers.common['Authorization'] = null;
 		store.commit('USER_CHANGED', null);
+		store.commit('MENU_CHANGED', []);
 		localStorage.removeItem(LOCALSTORAGE_JWT_CODE);
 	}
 

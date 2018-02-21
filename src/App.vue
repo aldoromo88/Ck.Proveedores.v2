@@ -1,8 +1,8 @@
 <template>
 <v-app>
 
-	<v-navigation-drawer fixed clipped app permanent :mini-variant.sync="mini" class="leftMenu" dark>
-		<v-toolbar v-if="user" flat class="transparent">
+	<v-navigation-drawer v-if="user" fixed clipped app permanent :mini-variant.sync="mini" class="leftMenu" dark>
+		<v-toolbar  flat class="transparent">
 			<v-list class="pa-0">
 				<v-list-tile>
 					<!-- <v-list-tile-avatar>
@@ -24,7 +24,7 @@
 		</v-toolbar>
 		<v-list class="pt-0" dense>
 			<v-divider></v-divider>
-			<v-list-group v-for="item in items" :value="item.active" v-bind:key="item.name">
+			<v-list-group v-for="item in items" v-bind:key="item.name">
 				<v-list-tile slot="item" :to="{path:item.pageName}">
 					<v-list-tile-action>
 						<v-icon>{{ item.imageUrl }}</v-icon>
@@ -39,6 +39,32 @@
 					</v-list-tile-action>
 					<v-list-tile-content>
 						<v-list-tile-sub-title>{{ resources[subItem.name] }}</v-list-tile-sub-title>
+					</v-list-tile-content>
+				</v-list-tile>
+			</v-list-group>
+			<v-list-group>
+				<v-list-tile slot="item">
+					<v-list-tile-action>
+						<v-icon>supervisor_account</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-sub-title>{{ resources.accountManagement }}</v-list-tile-sub-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile to="/passwrodChange">
+					<v-list-tile-action>
+						<v-icon>perm_device_information</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-sub-title>{{ resources.passwordChange }}</v-list-tile-sub-title>
+					</v-list-tile-content>
+				</v-list-tile>
+				<v-list-tile to="/logout">
+					<v-list-tile-action>
+						<v-icon>exit_to_app</v-icon>
+					</v-list-tile-action>
+					<v-list-tile-content>
+						<v-list-tile-sub-title>{{ resources.logout }}</v-list-tile-sub-title>
 					</v-list-tile-content>
 				</v-list-tile>
 			</v-list-group>
