@@ -171,6 +171,10 @@ export default {
 				this.feedbackType = 'info'
 				this.feedbackMessage = this.resources.noSnpSelected;
 				return;
+			} else if (data.detail.some(d => d.quantityToShip/d.snp >999)){
+				this.feedbackType = 'info'
+				this.feedbackMessage = this.resources.quantityLimit;
+				return;
 			}
 
 			this.$post('api/Transaction/CreateShipping', data)

@@ -17,20 +17,30 @@ export default{
 	},
 
 	authenticate (username, password) {
+		store.commit('IS_LOADING_GHANGED', true);
+
 		return axios.post('api/User/UserLogin', {username, password})
   			.then((c) => {
   				this.setToken(c.data);
   				return this.getMenu();
-  			});
+  			})
+				.finally(() => {
+					store.commit('IS_LOADING_GHANGED', false);
+				});
 	},
 
 	getMenu () {
+		store.commit('IS_LOADING_GHANGED', true);
+
 		return axios.post('api/User/GetMenu')
 			.then((c) => {
 				store.commit('MENU_CHANGED', c.data);
-			}).
-			catch((e) => {
+			})
+			.catch((e) => {
 				this.clearToken();
+			})
+			.finally(() => {
+				store.commit('IS_LOADING_GHANGED', false);
 			});
 	},
 

@@ -3,12 +3,11 @@ import axios from 'axios';
 axios.defaults.baseURL = process.env.API_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-
 export default {
 	install (Vue, options) {
 		Vue.prototype.$post = function (path, payload) {
+			this.$store.commit('IS_LOADING_GHANGED', true);
 			return new Promise((resolve, reject) => {
-				this.$store.commit('IS_LOADING_GHANGED', true);
 				return axios.post(path, payload)
 					.then((d) => {
 						resolve(d.data);
@@ -22,8 +21,8 @@ export default {
 			});
 		};
 		Vue.prototype.$downloadFile = function (path) {
+			this.$store.commit('IS_LOADING_GHANGED', true);
 			return new Promise((resolve, reject) => {
-				this.$store.commit('IS_LOADING_GHANGED', true);
 				return axios({
 					url: path,
 					method: 'GET',
@@ -41,8 +40,8 @@ export default {
 			});
 		},
 		Vue.prototype.$get = function (path) {
+			this.$store.commit('IS_LOADING_GHANGED', true);
 			return new Promise((resolve, reject) => {
-				this.$store.commit('IS_LOADING_GHANGED', true);
 				return axios.get(path)
 					.then((d) => {
 						resolve(d.data);

@@ -21,9 +21,7 @@
 <script>
 import resources from '@/lenguagesResources/login';
 import auth from '@/services/auth';
-import {
-	required
-} from '@/helpers/validationHelpers';
+import { required } from '@/helpers/validationHelpers';
 
 export default {
 	data() {
