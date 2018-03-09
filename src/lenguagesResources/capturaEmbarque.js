@@ -20,6 +20,7 @@ export default{
 		'MESSAGES.REQUEST_SUCCESS': 'Shippment created successfully',
 		'MESSAGE.ERROR_DB': 'Error on data base while creating shippment',
 		'MESSAGE.ERROR_API': 'Error on server while creating shippment',
+		'MESSAGES.SHIPPING_EXISTS': 'Shippment already exists, only one shippment is allowed at same time',
 		rules: {
 			deliveryDate: 'Tentative delivery date is required',
 			shipmentDate: 'Shipment date is required',
@@ -59,6 +60,7 @@ export default{
 		'MESSAGES.REQUEST_SUCCESS': 'Embarque creado correctamente',
 		'MESSAGE.ERROR_DB': 'Error en base de datos al crear embarque',
 		'MESSAGE.ERROR_API': 'Error en servidor al crear embarque',
+		'MESSAGES.SHIPPING_EXISTS': 'Ya existe un embarque, solo es posible tener un embarque a la vez',
 		rules: {
 			deliveryDate: 'Fecha tentativa de entrega es requerida',
 			shipmentDate: 'Fecha de embarque es requerida',
