@@ -14,11 +14,12 @@
 		<v-spacer></v-spacer>
 		<v-btn :loading="isLoading" color="green darken-1" dark small @click.native="$emit('close')">{{resources.close}}</v-btn>
 	</v-card-actions>
-	<v-speed-dial v-model="fab" top right direction="left" hover transition="slide-y-transition">
-		<v-btn :loading="isLoading" slot="activator" small color="blue darken-2" dark fab hover v-model="fab">
+	<!-- <v-speed-dial v-model="fab" top right direction="left" hover transition="slide-y-transition"> -->
+	<div style="position:absolute; right:16px; top:16px">
+		<!-- <v-btn :loading="isLoading" slot="activator" small color="blue darken-2" dark fab hover v-model="fab">
 			<v-icon>file_download</v-icon>
 			<v-icon>close</v-icon>
-		</v-btn>
+		</v-btn> -->
 		<v-btn v-if="hasPermissionToEdi" :loading="isLoading" fab dark small color="red" @click="downloadEdi">
 			EDI
 		</v-btn>
@@ -28,7 +29,8 @@
 		<v-btn :loading="isLoading" fab dark small color="green" @click="downloadXslx">
 			<v-icon>library_books</v-icon>
 		</v-btn>
-	</v-speed-dial>
+	</div>
+	<!-- </v-speed-dial> -->
 </v-card>
 </template>
 <script>

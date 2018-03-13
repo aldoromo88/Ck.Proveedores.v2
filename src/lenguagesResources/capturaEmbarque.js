@@ -1,7 +1,10 @@
+import commons from './commons';
 import shell from './shell';
 
 export default{
+
 	eng: {
+		...commons.eng,
 		title: shell.eng.newCapture,
 		deliveryDate: 'Tentative delivery date',
 		shipmentDate: 'Shipment date',
@@ -28,7 +31,7 @@ export default{
 			facility: 'Facility is required'
 		},
 		headers: [
-			{text: '# Control', value: 'controlNumber', align: 'left'},
+			{text: 'Required Date', value: 'requiredDate', align: 'left'},
 			{text: '# Release', value: 'releaseNumber', align: 'left'},
 			{text: '# Part', value: 'partNumber', align: 'left'},
 			{text: 'Purchase Order', value: 'purchaseOrder', align: 'left'},
@@ -42,6 +45,7 @@ export default{
 		]
 	},
 	esp: {
+		...commons.esp,
 		title: shell.esp.newCapture,
 		deliveryDate: 'Fecha tentativa de entrega',
 		shipmentDate: 'Fecha de embarque',
@@ -68,7 +72,7 @@ export default{
 			facility: 'Planta es requerida'
 		},
 		headers: [
-			{text: '# Control', value: 'controlNumber', align: 'left'},
+			{text: 'Feche Requerida', value: 'requiredDate', align: 'left'},
 			{text: '# Embarque', value: 'releaseNumber', align: 'left'},
 			{text: '# Parte', value: 'partNumber', align: 'left'},
 			{text: 'Orden de Compra', value: 'purchaseOrder', align: 'left'},

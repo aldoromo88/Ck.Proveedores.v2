@@ -1,8 +1,12 @@
 export default{
 	eng: {
-		all: 'All'
+		all: 'All',
+		from: 'From',
+		to: 'To'
 	},
 	esp: {
-		all: 'Todos'
+		all: 'Todos',
+		from: 'Desde',
+		to: 'Hasta'
 	}
 };

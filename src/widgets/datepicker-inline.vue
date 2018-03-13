@@ -1,7 +1,7 @@
 <template>
 <v-menu lazy :close-on-content-click="false" v-model="menu" transition="scale-transition" offset-y full-width :nudge-right="40" max-width="290px" min-width="290px">
   <v-text-field slot="activator" :label="label" :rules="rules" v-model="date" prepend-icon="event" readonly :disabled="disabled"></v-text-field>
-  <v-date-picker v-model="date" @input="$emit('input', date)" no-title scrollable actions :disabled="disabled">
+  <v-date-picker v-model="date" @input="$emit('input', date)" :allowed-dates="allowedDates" no-title scrollable actions :disabled="disabled">
     <template slot-scope="{ save, cancel }">
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -15,7 +15,7 @@
 <script>
 export default {
   name: 'ck-datepicker',
-  props: ['value', 'label','rules','disabled'],
+  props: ['value', 'label','rules','disabled','min','max','allowedDates'],
   data() {
     return {
       date: null,

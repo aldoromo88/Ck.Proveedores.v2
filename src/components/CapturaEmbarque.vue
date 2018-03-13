@@ -4,10 +4,10 @@
 		<v-form v-model="isMasterDataValid" ref="form" :lazy-validation="true">
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md5 lg3 order-sm1 order-lg1 pa-1 class="condense">
-					<ck-datepicker v-model="deliveryDate" :label="resources.deliveryDate" :rules="rules.deliveryDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
+					<ck-datepicker v-model="deliveryDate" :allowedDates="allowedDeliveryDates" :label="resources.deliveryDate" :rules="rules.deliveryDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
 				</v-flex>
 				<v-flex xs12 sm6 md5 lg3 order-sm3 order-lg2 pa-1 class="condense">
-					<ck-datepicker v-model="shipmentDate" :label="resources.shipmentDate" :rules="rules.shipmentDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
+					<ck-datepicker v-model="shipmentDate" :allowedDates="allowedShipmentDates" :label="resources.shipmentDate" :rules="rules.shipmentDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
 				</v-flex>
 				<v-flex xs12 sm6 md5 lg3 order-sm2 order-lg3 pa-1 class="condense">
 					<v-select v-bind:items="facilities" v-model="facility" :label="resources.facility" item-value="idPlant" item-text="name" :rules="rules.facility" validate-on-blur :disabled="isDetailOpen"></v-select>
@@ -23,12 +23,18 @@
 
 		<transition-group name="details-showed" mode="out-in">
 			<h3 v-show="isDetailOpen" class="mt-2" key="filterTitle">{{resources.filter}}</h3>
-			<v-layout row v-show="isDetailOpen" key="filter">
-				<v-flex sm6 md5 lg3 pa-1 d-inline-flex class="condense">
+			<v-layout row wrap v-show="isDetailOpen" key="filter">
+				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+					<ck-datepicker v-model="filter.to" :label="resources.from"></ck-datepicker>
+				</v-flex>
+				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+					<ck-datepicker v-model="filter.to" :label="resources.to"></ck-datepicker>
+				</v-flex>
+
+				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
 					<v-text-field v-model="filter.partNumber" :label="resources.partNumber"></v-text-field>
 				</v-flex>
-				<v-flex sm6 md5 lg3 pa-1 d-inline-flex class="condense">
-
+				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
 					<v-text-field v-model="filter.purchaseOrder" :label="resources.purchaseOrder"></v-text-field>
 					<v-btn :loading="isLoading" color="primary" class="inlineBtn" @click="clearFilter">
 						<v-icon class="pa-1">clear</v-icon>
@@ -37,11 +43,10 @@
 			</v-layout>
 			<v-card flat v-show="isDetailOpen" key="details">
 				<v-card-text>
-
 					<v-data-table :headers="headers" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
 						<template slot="items" slot-scope="props">
 	           <tr>
-							 <td>{{props.item.controlNumber}}</td>
+							 <td>{{props.item.requiredDate}}</td>
 							 <td>{{props.item.releaseNumber}}</td>
 							 <td>{{props.item.partNumber}}</td>
 							 <td>{{props.item.purchaseOrder}}</td>
@@ -73,16 +78,14 @@
 					</v-btn>
 				</v-card-actions>
 			</v-card>
-
 		</transition-group>
 	</v-layout>
 </v-container>
 </template>
 <script>
 import resources from '@/lenguagesResources/capturaEmbarque';
-import {
-	required
-} from '@/helpers/validationHelpers';
+import { required } from '@/helpers/validationHelpers';
+const today = parseInt(new Date().toISOString().substr(0, 10).replace(/-/g, ''));
 
 export default {
 	data() {
@@ -119,10 +122,20 @@ export default {
 			return this.resources.headers || []
 		},
 		details() {
+			const from = this.filter.from ? parseInt(this.filter.from.replace(/-/g, '')) : undefined;
+			const to = this.filter.to ? parseInt(this.filter.to.replace(/-/g, '')) : undefined;
 			return this.detailsRaw.filter(
 				d => (!this.filter.partNumber || d.partNumber.toUpperCase().includes(this.filter.partNumber.toUpperCase())) &&
-				(!this.filter.purchaseOrder || ('' + d.purchaseOrder).toUpperCase().includes(this.filter.purchaseOrder.toUpperCase()))
+				(!this.filter.purchaseOrder || ('' + d.purchaseOrder).toUpperCase().includes(this.filter.purchaseOrder.toUpperCase())) &&
+				(!from || d.requiredDate >= from) &&
+				(!to || d.requiredDate <= to)
 			);
+		},
+		shipmentDateNumeric() {
+			return this.shipmentDate ? parseInt(this.shipmentDate.replace(/-/g, '')) : undefined;
+		},
+		deliveryDateNumeric() {
+			return this.deliveryDate ? parseInt(this.deliveryDate.replace(/-/g, '')) : undefined;
 		}
 	},
 	methods: {
@@ -187,6 +200,15 @@ export default {
 					this.feedbackMessage = this.resources[d.message];
 					this.getDetail();
 				});
+		},
+		allowedShipmentDates(date) {
+			const d = parseInt(date.replace(/-/g, ''));
+			console.log(`Date:${d}, Today:${today}, deliveryDateNumeric:${this.deliveryDateNumeric}`);
+			return d >= today && (!this.deliveryDateNumeric || d <= this.deliveryDateNumeric);
+		},
+		allowedDeliveryDates(date) {
+			const d = parseInt(date.replace(/-/g, ''));
+			return d >= today && (!this.shipmentDateNumeric || d >= this.shipmentDateNumeric);
 		}
 	},
 	mounted() {
