@@ -67,6 +67,11 @@ export default {
 				}).then(d => {
 					this.feedbackType = d.hasError ? 'error' : 'success';
 					this.feedbackMessage = this.resources[d.message];
+					if (!d.hasError) {
+						this.oldPassword = null,
+							this.password = null,
+							this.confirmPassword = null,
+					}
 				});
 			}
 		}

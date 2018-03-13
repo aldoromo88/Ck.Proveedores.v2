@@ -19,7 +19,7 @@
 			<v-icon>file_download</v-icon>
 			<v-icon>close</v-icon>
 		</v-btn>
-		<v-btn :loading="isLoading" fab dark small color="red" @click="downloadEdi">
+		<v-btn v-if="hasPermissionToEdi" :loading="isLoading" fab dark small color="red" @click="downloadEdi">
 			EDI
 		</v-btn>
 		<v-btn :loading="isLoading" fab dark small color="indigo" @click="downloadCsv">
@@ -83,6 +83,9 @@ export default {
 			fileSaver.saveAs(file);
 		},
 		downloadEdi() {
+			if (!this.hasPermissionToEdi) {
+				return;
+			}
 			this.$get(`api/Transaction/GetEdiDocument?idVendorEdi=${this.idVendorEdi}`)
 				.then(d => fileSaver.saveAs(d, 'data.edi'))
 				.catch(e => {
@@ -110,6 +113,10 @@ export default {
 			const headersValues = this.headers.map(h => h.value);
 			const headers = [this.headers.map(h => h.text)];
 			return headers.concat(this.items.map(row => headersValues.map(k => row[k])));
+		},
+		hasPermissionToEdi() {
+			const type = this.$store.getters.User.Type;
+			return type === 'WEB' || type === 'CON';
 		}
 	}
 }

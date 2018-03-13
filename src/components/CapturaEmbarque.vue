@@ -167,14 +167,18 @@ export default {
 				this.feedbackType = 'info'
 				this.feedbackMessage = this.resources.noQuantitySelected;
 				return;
-			} else if (data.detail.some(d => d.snp <= 0)) {
-				this.feedbackType = 'info'
-				this.feedbackMessage = this.resources.noSnpSelected;
-				return;
-			} else if (data.detail.some(d => d.quantityToShip/d.snp >999)){
-				this.feedbackType = 'info'
-				this.feedbackMessage = this.resources.quantityLimit;
-				return;
+			}
+			for (var i = 0; i < data.detail.length; i++) {
+				const d = data.detail[i];
+				if (d.snp <= 0) {
+					this.feedbackType = 'info'
+					this.feedbackMessage = this.resources.noSnpSelected;
+					return;
+				} else if ((d.quantityToShip / d.snp) > 999) {
+					this.feedbackType = 'info'
+					this.feedbackMessage = this.resources.quantityLimit;
+					return;
+				}
 			}
 
 			this.$post('api/Transaction/CreateShipping', data)
@@ -193,13 +197,13 @@ export default {
 </script>
 <style>
 .inlineBtn {
-	min-width: 0px!important;
-	width: 36px!important;
+	min-width: 0px !important;
+	width: 36px !important;
 	margin: 13px 0;
 }
 
 .condense {
-	height: 50px!important;
+	height: 50px !important;
 }
 
 .details-showed-enter-active,
