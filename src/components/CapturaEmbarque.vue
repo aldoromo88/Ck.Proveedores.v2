@@ -4,10 +4,10 @@
 		<v-form v-model="isMasterDataValid" ref="form" :lazy-validation="true">
 			<v-layout row wrap>
 				<v-flex xs12 sm6 md5 lg3 order-sm1 order-lg1 pa-1 class="condense">
-					<ck-datepicker v-model="deliveryDate" :allowedDates="allowedDeliveryDates" :label="resources.deliveryDate" :rules="rules.deliveryDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
+					<ck-datepicker v-model="shipmentDate" :allowedDates="allowedShipmentDates" :label="resources.shipmentDate" :rules="rules.shipmentDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
 				</v-flex>
 				<v-flex xs12 sm6 md5 lg3 order-sm3 order-lg2 pa-1 class="condense">
-					<ck-datepicker v-model="shipmentDate" :allowedDates="allowedShipmentDates" :label="resources.shipmentDate" :rules="rules.shipmentDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
+					<ck-datepicker v-model="deliveryDate" :allowedDates="allowedDeliveryDates" :label="resources.deliveryDate" :rules="rules.deliveryDate" validate-on-blur :disabled="isDetailOpen"></ck-datepicker>
 				</v-flex>
 				<v-flex xs12 sm6 md5 lg3 order-sm2 order-lg3 pa-1 class="condense">
 					<v-select v-bind:items="facilities" v-model="facility" :label="resources.facility" item-value="idPlant" item-text="name" :rules="rules.facility" validate-on-blur :disabled="isDetailOpen"></v-select>
@@ -21,30 +21,29 @@
 			</v-layout>
 		</v-form>
 
-		<transition-group name="details-showed" mode="out-in">
-			<h3 v-show="isDetailOpen" class="mt-2" key="filterTitle">{{resources.filter}}</h3>
-			<v-layout row wrap v-show="isDetailOpen" key="filter">
-				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
-					<ck-datepicker v-model="filter.to" :label="resources.from"></ck-datepicker>
-				</v-flex>
-				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
-					<ck-datepicker v-model="filter.to" :label="resources.to"></ck-datepicker>
-				</v-flex>
+		<h3 v-show="isDetailOpen" class="mt-2" key="filterTitle">{{resources.filter}}</h3>
+		<v-layout row wrap v-show="isDetailOpen" key="filter">
+			<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+				<ck-datepicker v-model="filter.from" :label="resources.from"></ck-datepicker>
+			</v-flex>
+			<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+				<ck-datepicker v-model="filter.to" :label="resources.to"></ck-datepicker>
+			</v-flex>
 
-				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
-					<v-text-field v-model="filter.partNumber" :label="resources.partNumber"></v-text-field>
-				</v-flex>
-				<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
-					<v-text-field v-model="filter.purchaseOrder" :label="resources.purchaseOrder"></v-text-field>
-					<v-btn :loading="isLoading" color="primary" class="inlineBtn" @click="clearFilter">
-						<v-icon class="pa-1">clear</v-icon>
-					</v-btn>
-				</v-flex>
-			</v-layout>
-			<v-card flat v-show="isDetailOpen" key="details">
-				<v-card-text>
-					<v-data-table :headers="headers" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
-						<template slot="items" slot-scope="props">
+			<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+				<v-text-field v-model="filter.partNumber" :label="resources.partNumber"></v-text-field>
+			</v-flex>
+			<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+				<v-text-field v-model="filter.purchaseOrder" :label="resources.purchaseOrder"></v-text-field>
+				<v-btn :loading="isLoading" color="primary" class="inlineBtn" @click="clearFilter">
+					<v-icon class="pa-1">clear</v-icon>
+				</v-btn>
+			</v-flex>
+		</v-layout>
+		<v-card flat v-show="isDetailOpen" key="details">
+			<v-card-text>
+				<v-data-table :headers="headers" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
+					<template slot="items" slot-scope="props">
 	           <tr>
 							 <td>{{props.item.requiredDate}}</td>
 							 <td>{{props.item.releaseNumber}}</td>
@@ -59,26 +58,25 @@
 							 <td><v-text-field v-model="props.item.quantityToShip" hide-details style="padding: 3px 0; width:80px"></v-text-field></td>
 	           </tr>
 	         </template>
-					</v-data-table>
-					<ck-alert :type="feedbackType" :message="feedbackMessage" @close="()=>feedbackMessage = null"></ck-alert>
-				</v-card-text>
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn :loading="isLoading" color="error" :disabled="!isMasterDataValid" @click="deleteShipment">
-						{{resources.cancelShipment}}
-					</v-btn>
-					<v-btn :loading="isLoading" :disabled="!isMasterDataValid" @click="fillAll">
-						{{resources.fillAll}}
-					</v-btn>
-					<v-btn :loading="isLoading" :disabled="!isMasterDataValid" @click="clearAll">
-						{{resources.clearAll}}
-					</v-btn>
-					<v-btn :loading="isLoading" color="primary" :disabled="!isMasterDataValid" @click="createShipment">
-						{{resources.createShipment}}
-					</v-btn>
-				</v-card-actions>
-			</v-card>
-		</transition-group>
+				</v-data-table>
+				<ck-alert :type="feedbackType" :message="feedbackMessage" @close="()=>feedbackMessage = null"></ck-alert>
+			</v-card-text>
+			<v-card-actions>
+				<v-spacer></v-spacer>
+				<v-btn :loading="isLoading" color="error" :disabled="!isMasterDataValid" @click="deleteShipment">
+					{{resources.cancelShipment}}
+				</v-btn>
+				<v-btn :loading="isLoading" :disabled="!isMasterDataValid" @click="fillAll">
+					{{resources.fillAll}}
+				</v-btn>
+				<v-btn :loading="isLoading" :disabled="!isMasterDataValid" @click="clearAll">
+					{{resources.clearAll}}
+				</v-btn>
+				<v-btn :loading="isLoading" color="primary" :disabled="!isMasterDataValid" @click="createShipment">
+					{{resources.createShipment}}
+				</v-btn>
+			</v-card-actions>
+		</v-card>
 	</v-layout>
 </v-container>
 </template>
@@ -98,7 +96,12 @@ export default {
 			facilities: [],
 			facility: null,
 			detailsRaw: [],
-			filter: {},
+			filter: {
+				from: null,
+				to: null,
+				partNumber: null,
+				purchaseOrder: null
+			},
 			feedbackType: 'error',
 			feedbackMessage: null
 		}
@@ -124,6 +127,7 @@ export default {
 		details() {
 			const from = this.filter.from ? parseInt(this.filter.from.replace(/-/g, '')) : undefined;
 			const to = this.filter.to ? parseInt(this.filter.to.replace(/-/g, '')) : undefined;
+			console.log(`from: ${from} to: ${to}`);
 			return this.detailsRaw.filter(
 				d => (!this.filter.partNumber || d.partNumber.toUpperCase().includes(this.filter.partNumber.toUpperCase())) &&
 				(!this.filter.purchaseOrder || ('' + d.purchaseOrder).toUpperCase().includes(this.filter.purchaseOrder.toUpperCase())) &&
@@ -160,7 +164,10 @@ export default {
 			this.details.forEach(d => d.quantityToShip = 0);
 		},
 		clearFilter() {
-			this.filter = {};
+			this.filter.to = null;
+			this.filter.from = null;
+			this.filter.partNumber = null;
+			this.filter.purchaseOrder = null;
 		},
 		createShipment() {
 
@@ -203,7 +210,6 @@ export default {
 		},
 		allowedShipmentDates(date) {
 			const d = parseInt(date.replace(/-/g, ''));
-			console.log(`Date:${d}, Today:${today}, deliveryDateNumeric:${this.deliveryDateNumeric}`);
 			return d >= today && (!this.deliveryDateNumeric || d <= this.deliveryDateNumeric);
 		},
 		allowedDeliveryDates(date) {
