@@ -41,7 +41,7 @@
 			</v-flex>
 		</v-layout>
 		<v-card flat v-show="isDetailOpen" key="details">
-			<v-card-text>
+			<v-card-text style="max-height:400px">
 				<v-data-table :headers="headers" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
 					<template slot="items" slot-scope="props">
 	           <tr>
@@ -127,7 +127,6 @@ export default {
 		details() {
 			const from = this.filter.from ? parseInt(this.filter.from.replace(/-/g, '')) : undefined;
 			const to = this.filter.to ? parseInt(this.filter.to.replace(/-/g, '')) : undefined;
-			console.log(`from: ${from} to: ${to}`);
 			return this.detailsRaw.filter(
 				d => (!this.filter.partNumber || d.partNumber.toUpperCase().includes(this.filter.partNumber.toUpperCase())) &&
 				(!this.filter.purchaseOrder || ('' + d.purchaseOrder).toUpperCase().includes(this.filter.purchaseOrder.toUpperCase())) &&
@@ -176,11 +175,7 @@ export default {
 				shippingDate: this.shipmentDate,
 				invoice: this.invoice,
 				shippingTo: this.facility,
-				detail: this.detailsRaw.filter(d => parseInt(d.quantityToShip) > 0).map(d => ({
-					idVendorEdiDetail: d.idVendorEdiDetail,
-					snp: parseInt(d.snp),
-					quantity: parseInt(d.quantityToShip)
-				}))
+				detail: this.detailsRaw.filter(d => parseInt(d.quantityToShip) > 0)
 			}
 
 			if (!data.detail.length) {
@@ -191,15 +186,25 @@ export default {
 			for (var i = 0; i < data.detail.length; i++) {
 				const d = data.detail[i];
 				if (d.snp <= 0) {
-					this.feedbackType = 'info'
-					this.feedbackMessage = this.resources.noSnpSelected;
+					this.feedbackType = 'info';
+					this.feedbackMessage =`#${d.partNumber} : ${this.resources.noSnpSelected}`;
 					return;
 				} else if ((d.quantityToShip / d.snp) > 999) {
-					this.feedbackType = 'info'
-					this.feedbackMessage = this.resources.quantityLimit;
+					this.feedbackType = 'info';
+					this.feedbackMessage = `#${d.partNumber} : ${this.resources.quantityLimit}`;
+					return;
+				}else if(d.quantityToShip>d.pendingToShip){
+					this.feedbackType = 'info';
+					this.feedbackMessage = `#${d.partNumber} : ${this.resources.quantityToShipBiggerThanPending}`;
 					return;
 				}
 			}
+
+			data.detail = data.detail.map(d => ({
+				idVendorEdiDetail: d.idVendorEdiDetail,
+				snp: parseInt(d.snp),
+				quantity: parseInt(d.quantityToShip)
+			}))
 
 			this.$post('api/Transaction/CreateShipping', data)
 				.then(d => {

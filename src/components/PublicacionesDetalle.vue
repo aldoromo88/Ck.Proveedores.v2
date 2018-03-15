@@ -1,7 +1,7 @@
 <template>
 <v-card>
 	<v-card-title class="headline">{{resources.title}} </v-card-title>
-	<v-card-text>
+	<v-card-text style="max-height:400px">
 		<v-data-table :headers="headers" :items="items" :rows-per-page-items="[-1]">
 			<template slot="items" slot-scope="props">
          <tr class="compact">
