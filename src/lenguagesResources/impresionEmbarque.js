@@ -11,7 +11,7 @@ export default{
 		detail: 'Detail',
 		close: 'Close',
 		shipmentDetail: 'Shipment Detail',
-
+		partNumber: '# Part',
 		rules: {
 			status: 'Status is required'
 		},
@@ -44,6 +44,7 @@ export default{
 		detail: 'Detalle',
 		shipmentDetail: 'Detalle de Embarque',
 		close: 'Cerrar',
+		partNumber: '# Parte',
 		rules: {
 			status: 'Estatus es requerido'
 		},

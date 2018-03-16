@@ -11,7 +11,7 @@
 		</v-layout>
 		<v-card>
 			<v-card-text>
-				<v-data-table :headers="headers" :items="items" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
+				<v-data-table :headers="headers" :items="items" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading" style="max-height:400px; overflow:auto">
 					<template slot="items" slot-scope="props">
            <tr>
              <td>{{getReleaseTypeName(props.item.idEdiType)}}</td>

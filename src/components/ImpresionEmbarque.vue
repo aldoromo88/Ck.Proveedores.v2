@@ -21,7 +21,7 @@
 		<transition-group name="details-showed" mode="out-in">
 			<v-card flat v-show="isDetailOpen" key="details">
 				<v-card-text>
-					<v-data-table :headers="headers" :items="results" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
+					<v-data-table :headers="headers" :items="results" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading" style="max-height:400px; overflow:auto">
 						<template slot="items" slot-scope="props">
 	           <tr>
 						 	 <td>{{props.item.tentativeDeliveryDate}}</td>
@@ -44,7 +44,15 @@
 			<v-card>
 				<v-card-title class="headline">{{resources.shipmentDetail}}</v-card-title>
 				<v-card-text>
-					<v-data-table :headers="detailHeaders" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
+					<v-layout>
+						<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+							<v-text-field v-model="filter.partNumber" :label="resources.partNumber"></v-text-field>
+							<v-btn :loading="isLoading" color="primary" class="inlineBtn" @click="clearFilter">
+								<v-icon class="pa-1">clear</v-icon>
+							</v-btn>
+						</v-flex>
+					</v-layout>
+					<v-data-table :headers="detailHeaders" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading" style="max-height:400px; overflow:auto">
 						<template slot="items" slot-scope="props">
 						<tr>
 	 					 <td v-for="h in detailHeaders" v-if="props.item[h.value]!==null">{{props.item[h.value]}} </td>
@@ -85,8 +93,11 @@ export default {
 			status: null,
 			detailsRaw: [],
 			dialog: false,
-			details: [],
-			idShipping: 0
+			detailsRaw: [],
+			idShipping: 0,
+			filter: {
+				partNumber: null,
+			},
 		}
 	},
 	computed: {
@@ -120,6 +131,9 @@ export default {
 				d => (this.facility === 0 || d.idPlant === this.facility) &&
 				(d.printStatus === this.status)
 			);
+		},
+		details() {
+			return this.detailsRaw.filter(d => !this.filter.partNumber || d.partNumber.toUpperCase().includes(this.filter.partNumber.toUpperCase()));
 		}
 	},
 	methods: {
@@ -135,7 +149,7 @@ export default {
 		getPendingToShipDetail(id) {
 			this.idShipping = id;
 			this.dialog = true
-			this.$post('api/Transaction/GetShippingDetail', id).then(d => this.details = d);
+			this.$post('api/Transaction/GetShippingDetail', id).then(d => this.detailsRaw = d);
 		},
 		closeDetail() {
 			this.dialog = false;
@@ -148,7 +162,9 @@ export default {
 					console.log(e);
 				});
 		},
-
+		clearFilter() {
+			this.filter.partNumber = null;
+		},
 	},
 	mounted() {
 		this.$post('api/Common/GetPlants').then(d => this.facilitiesRaw = d);
@@ -158,13 +174,13 @@ export default {
 </script>
 <style>
 .inlineBtn {
-	min-width: 0px!important;
-	width: 36px!important;
+	min-width: 0px !important;
+	width: 36px !important;
 	margin: 13px 0;
 }
 
 .condense {
-	height: 50px!important;
+	height: 50px !important;
 }
 
 .details-showed-enter-active,
