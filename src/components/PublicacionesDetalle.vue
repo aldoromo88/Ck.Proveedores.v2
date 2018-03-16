@@ -1,10 +1,18 @@
 <template>
 <v-card>
 	<v-card-title class="headline">{{resources.title}} </v-card-title>
-	<v-card-text style="max-height:400px">
-		<v-data-table :headers="headers" :items="items" :rows-per-page-items="[-1]">
+	<v-card-text>
+		<v-layout>
+			<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+				<v-text-field v-model="filter.partNumber" :label="resources.partNumber"></v-text-field>
+				<v-btn :loading="isLoading" color="primary" class="inlineBtn" @click="clearFilter">
+					<v-icon class="pa-1">clear</v-icon>
+				</v-btn>
+			</v-flex>
+		</v-layout>
+		<v-data-table :headers="headers" :items="itemsFiltered" :rows-per-page-items="[-1]" style="max-height:400px; overflow:auto">
 			<template slot="items" slot-scope="props">
-         <tr class="compact">
+         <tr>
 					 <td v-for="h in headers" v-if="props.item[h.value]!==null">{{props.item[h.value]}} </td>
          </tr>
        </template>
@@ -51,7 +59,38 @@ export default {
 	},
 	data() {
 		return {
-			fab: false
+			filter: {
+				partNumber: null,
+			},
+		}
+	},
+	computed: {
+		resources() {
+			if (!this.$store.getters.Lenguage) {
+				return {}
+			}
+			return resources[this.$store.getters.Lenguage];
+		},
+
+		headers() {
+			const headers = this.resources.headers || []
+			const firstItem = this.items.length > 0 ? this.items[0] : undefined;
+
+			if (!firstItem) return [];
+			return headers.filter(p => firstItem[p.value] !== null);
+		},
+		dataForDownload() {
+
+			const headersValues = this.headers.map(h => h.value);
+			const headers = [this.headers.map(h => h.text)];
+			return headers.concat(this.items.map(row => headersValues.map(k => row[k])));
+		},
+		hasPermissionToEdi() {
+			const type = this.$store.getters.User.Type;
+			return type === 'WEB' || type === 'CON';
+		},
+		itemsFiltered() {
+			return this.items.filter(d => !this.filter.partNumber || d.partNumber.toUpperCase().includes(this.filter.partNumber.toUpperCase()));
 		}
 	},
 	methods: {
@@ -93,33 +132,10 @@ export default {
 				.catch(e => {
 					console.log(e);
 				});
-		}
-	},
-	computed: {
-		resources() {
-			if (!this.$store.getters.Lenguage) {
-				return {}
-			}
-			return resources[this.$store.getters.Lenguage];
 		},
-
-		headers() {
-			const headers = this.resources.headers || []
-			const firstItem = this.items.length > 0 ? this.items[0] : undefined;
-
-			if (!firstItem) return [];
-			return headers.filter(p => firstItem[p.value] !== null);
+		clearFilter() {
+			this.filter.partNumber = null;
 		},
-		dataForDownload() {
-
-			const headersValues = this.headers.map(h => h.value);
-			const headers = [this.headers.map(h => h.text)];
-			return headers.concat(this.items.map(row => headersValues.map(k => row[k])));
-		},
-		hasPermissionToEdi() {
-			const type = this.$store.getters.User.Type;
-			return type === 'WEB' || type === 'CON';
-		}
 	}
 }
 </script>

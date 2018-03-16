@@ -2,6 +2,7 @@ export default {
 	eng: {
 		title: 'Release detail',
 		close: 'Close',
+		partNumber: '# Part',
 		headers: [
 			// {text: '# Control', value: 'controlNumber', align: 'left'},
 			{text: 'Facility', value: 'facilityCode', align: 'left'},
@@ -30,6 +31,7 @@ export default {
 	esp: {
 		title: 'Detalle de publicación',
 		close: 'Cerrar',
+		partNumber: '# Parte',
 		headers: [
 			// {text: '# Control', value: 'controlNumber', align: 'left'},
 			{text: 'Planta', value: 'facilityCode', align: 'left'},

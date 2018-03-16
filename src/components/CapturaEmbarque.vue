@@ -23,9 +23,9 @@
 
 		<h3 v-show="isDetailOpen" class="mt-2" key="filterTitle">{{resources.filter}}</h3>
 		<v-layout row wrap v-show="isDetailOpen" key="filter">
-			<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
+			<!-- <v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
 				<ck-datepicker v-model="filter.from" :label="resources.from"></ck-datepicker>
-			</v-flex>
+			</v-flex> -->
 			<v-flex sm6 md5 lg3 d-inline-flex class="condense pa-1">
 				<ck-datepicker v-model="filter.to" :label="resources.to"></ck-datepicker>
 			</v-flex>
@@ -41,8 +41,8 @@
 			</v-flex>
 		</v-layout>
 		<v-card flat v-show="isDetailOpen" key="details">
-			<v-card-text style="max-height:400px">
-				<v-data-table :headers="headers" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading">
+			<v-card-text>
+				<v-data-table :headers="headers" :items="details" :rows-per-page-items="[-1]" :loading="$store.getters.IsLoading" :pagination.sync="pagination" style="max-height:400px; overflow:auto">
 					<template slot="items" slot-scope="props">
 	           <tr>
 							 <td>{{props.item.requiredDate}}</td>
@@ -54,7 +54,7 @@
 							 <td>{{props.item.transitQuantity}}</td>
 							 <td>{{props.item.confirmedQuantity}}</td>
 							 <td>{{props.item.pendingToShip}}</td>
-							 <td><v-text-field v-model="props.item.snp" hide-details style="padding: 3px 0; width:80px"></v-text-field></td>
+							 <td><v-text-field v-model="props.item.snp" hide-details style="padding: 3px 0; width:80px" maxlength="4"></v-text-field></td>
 							 <td><v-text-field v-model="props.item.quantityToShip" hide-details style="padding: 3px 0; width:80px"></v-text-field></td>
 	           </tr>
 	         </template>
@@ -96,6 +96,10 @@ export default {
 			facilities: [],
 			facility: null,
 			detailsRaw: [],
+			pagination: {
+				sortBy: 'requiredDate',
+				descending: true
+			},
 			filter: {
 				from: null,
 				to: null,
@@ -187,13 +191,13 @@ export default {
 				const d = data.detail[i];
 				if (d.snp <= 0) {
 					this.feedbackType = 'info';
-					this.feedbackMessage =`#${d.partNumber} : ${this.resources.noSnpSelected}`;
+					this.feedbackMessage = `#${d.partNumber} : ${this.resources.noSnpSelected}`;
 					return;
 				} else if ((d.quantityToShip / d.snp) > 999) {
 					this.feedbackType = 'info';
 					this.feedbackMessage = `#${d.partNumber} : ${this.resources.quantityLimit}`;
 					return;
-				}else if(d.quantityToShip>d.pendingToShip){
+				} else if (d.quantityToShip > d.pendingToShip) {
 					this.feedbackType = 'info';
 					this.feedbackMessage = `#${d.partNumber} : ${this.resources.quantityToShipBiggerThanPending}`;
 					return;

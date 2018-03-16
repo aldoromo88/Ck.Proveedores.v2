@@ -2,7 +2,7 @@
 <v-app>
 
 	<v-navigation-drawer v-if="user" fixed clipped app permanent :mini-variant.sync="mini" class="leftMenu" dark>
-		<v-toolbar  flat class="transparent">
+		<v-toolbar flat class="transparent">
 			<v-list class="pa-0">
 				<v-list-tile>
 					<!-- <v-list-tile-avatar>
@@ -161,25 +161,30 @@ table.table thead td:first-child,
 table.table tbody td:first-child,
 table.table thead th:first-child,
 table.table tbody th:first-child {
-	padding: 0!important
+	padding-top: 0 !important;
+	padding-bottom: 0 !important;
+	padding-left: 3px !important;
+	padding-right: 3px !important;
+	white-space: nowrap !important;
 }
 
 table.table tbody td,
 table.table tbody th {
-	height: 25px!important;
+	height: 25px !important;
+
 }
 
 .leftMenu {
-	background-color: #4c505d!important;
-	border-right: 1px solid #656877!important;
+	background-color: #4c505d !important;
+	border-right: 1px solid #656877 !important;
 }
 
 .topMenu {
-	background-color: #050505!important;
+	background-color: #050505 !important;
 }
 
 .list__tile--active {
-	color: red!important
+	color: red !important
 }
 
 h1 {
@@ -189,5 +194,15 @@ h1 {
 .titleBar {
 	padding-left: 16px;
 	background-color: #3d404a;
+}
+
+.card {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+.card>.card__text {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
 }
 </style>
