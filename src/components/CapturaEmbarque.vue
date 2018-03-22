@@ -83,7 +83,11 @@
 <script>
 import resources from '@/lenguagesResources/capturaEmbarque';
 import { required } from '@/helpers/validationHelpers';
-const today = parseInt(new Date().toISOString().substr(0, 10).replace(/-/g, ''));
+
+
+
+const d = new Date();
+const today = (d.getFullYear()*10000) + (d.getMonth()+1)*100 + d.getDate()
 
 export default {
 	data() {
