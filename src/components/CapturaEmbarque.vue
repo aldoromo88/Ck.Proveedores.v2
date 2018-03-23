@@ -168,7 +168,7 @@ export default {
 			this.details.forEach(d => d.quantityToShip = d.pendingToShip);
 		},
 		clearAll() {
-			this.details.forEach(d => d.quantityToShip = 0);
+			this.detailsRaw.forEach(d => d.quantityToShip = 0);
 		},
 		clearFilter() {
 			this.filter.to = null;
@@ -186,23 +186,20 @@ export default {
 				detail: this.detailsRaw.filter(d => parseInt(d.quantityToShip) > 0)
 			}
 
+			this.feedbackType = 'info'
 			if (!data.detail.length) {
-				this.feedbackType = 'info'
 				this.feedbackMessage = this.resources.noQuantitySelected;
 				return;
 			}
 			for (var i = 0; i < data.detail.length; i++) {
 				const d = data.detail[i];
 				if (d.snp <= 0) {
-					this.feedbackType = 'info';
 					this.feedbackMessage = `#${d.partNumber} : ${this.resources.noSnpSelected}`;
 					return;
 				} else if ((d.quantityToShip / d.snp) > 999) {
-					this.feedbackType = 'info';
 					this.feedbackMessage = `#${d.partNumber} : ${this.resources.quantityLimit}`;
 					return;
 				} else if (d.quantityToShip > d.pendingToShip) {
-					this.feedbackType = 'info';
 					this.feedbackMessage = `#${d.partNumber} : ${this.resources.quantityToShipBiggerThanPending}`;
 					return;
 				}
