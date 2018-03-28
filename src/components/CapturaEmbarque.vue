@@ -38,14 +38,14 @@
  						 <td>{{props.item.confirmedQuantity}}</td>
  						 <td>{{props.item.pendingToShip}}</td>
 						 <td>{{props.item.snp}}</td>
-						 <td>{{props.item.transitQuantity}}</td>
+						 <td>{{props.item.quantityToShip}}</td>
 	          </tr>
 				 </template>
           </v-data-table>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn :loading="isLoading" color="red darken-1" dark small @click="deleteShipment">{{resources.cancel}}</v-btn>
+          <v-btn :loading="isLoading" color="red darken-1" dark small @click="cancelShipment">{{resources.cancel}}</v-btn>
           <v-btn :loading="isLoading" color="green darken-1" dark small @click="invoiceExists = false">{{resources.continue}}</v-btn>
         </v-card-actions>
       </v-card>
@@ -90,11 +90,11 @@
 	           </tr>
 	         </template>
         </v-data-table>
-        <ck-alert :type="feedbackType" :message="feedbackMessage" @close="()=>feedbackMessage = null"></ck-alert>
+
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn :loading="isLoading" color="error" :disabled="!isMasterDataValid" @click="deleteShipment">
+        <v-btn :loading="isLoading" color="error" :disabled="!isMasterDataValid" @click="cancelShipment">
           {{resources.cancelShipment}}
         </v-btn>
         <v-btn :loading="isLoading" :disabled="!isMasterDataValid" @click="fillAll">
@@ -108,6 +108,7 @@
         </v-btn>
       </v-card-actions>
     </v-card>
+    <ck-alert :type="feedbackType" :message="feedbackMessage" @close="()=>feedbackMessage = null"></ck-alert>
   </v-layout>
 </v-container>
 </template>
@@ -187,16 +188,18 @@ export default {
       if (this.$refs.form.validate()) {
         this.getDetail();
         this.isDetailOpen = true;
+        this.feedbackMessage = null;
         this.clearFilter();
       }
     },
-    deleteShipment() {
+    cancelShipment() {
       this.isDetailOpen = false;
       this.deliveryDate = null;
       this.shipmentDate = null;
       this.invoiceExists = false;
       this.invoice = null;
       this.facility = null;
+      this.$refs.form.reset();
       this.clearFilter();
     },
     getDetail() {
@@ -218,10 +221,8 @@ export default {
       this.filter.from = null;
       this.filter.partNumber = null;
       this.filter.purchaseOrder = null;
-      this.invoiceExists = false;
     },
     createShipment() {
-
       const data = {
         tentativeDeliveryDate: this.deliveryDate,
         shippingDate: this.shipmentDate,
@@ -259,7 +260,7 @@ export default {
         .then(d => {
           this.feedbackType = d.hasError ? 'error' : 'success';
           this.feedbackMessage = this.resources[d.message];
-          this.getDetail();
+          this.cancelShipment();
         });
     },
     allowedShipmentDates(date) {
@@ -274,6 +275,8 @@ export default {
   mounted() {
     this.$post('api/Common/GetPlants').then(d => this.facilities = d);
     this.$store.commit('CHANGE_TITLE', this.resources.title);
+    this.cancelShipment();
+    this.feedbackMessage = null;
   }
 }
 </script>
