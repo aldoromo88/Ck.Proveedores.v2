@@ -21,15 +21,35 @@
              <td>
                <v-btn :loading="isLoading" flat icon color="blue" @click.native.stop="loadDetail(props.item.idVendorEdi)">
                  <v-icon>search</v-icon>
-              </v-btn>
+               </v-btn>
+               <v-btn v-if="props.item.idEdiType===1" :loading="isLoading" flat icon color="blue" @click.native.stop="openDialogComment(props.item)">
+                 <v-icon>insert_drive_file</v-icon>
+               </v-btn>
              </td>
            </tr>
          </template>
         </v-data-table>
       </v-card-text>
     </v-card>
-
-    <v-dialog scrollable v-model="dialogOpen">
+    <v-dialog v-if="selectedItem" v-model="dialogCommentOpen" width="500">
+      <v-card>
+        <v-card-title>
+          <h3>Comentarios para Firme {{selectedItem.releaseNumber}}</h3>
+        </v-card-title>
+        <v-card-text>
+          <div style="height:120px; position:relative" class="ml-3 mr-3">
+            <textarea v-model="comment" tabindex="0" rows="5" style="border:solid #888 1px; width:100%"></textarea>
+          </div>
+          <ck-alert type="error" :message="commentFeedback" @close="()=>commentFeedback = null"></ck-alert>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn :loading="isLoading" color="red darken-1" dark small @click="dialogCommentOpen=false">{{resources.cancel}}</v-btn>
+          <v-btn :loading="isLoading" color="green darken-1" dark small @click="sendComment">{{resources.send}}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-dialog scrollable v-model="dialogDetailWindowOpen">
       <PublicacionesDetalle :items="details" :idVendorEdi="idVendorEdi" v-on:close="closeDialog"></PublicacionesDetalle>
     </v-dialog>
   </v-layout>
@@ -38,7 +58,6 @@
 <script>
 import resources from '@/lenguagesResources/publicaciones'
 import commonResources from '@/lenguagesResources/commons'
-
 import PublicacionesDetalle from '@/components/PublicacionesDetalle'
 
 export default {
@@ -47,10 +66,14 @@ export default {
       selectedReleaseType: 0,
       releaseTypesRaw: [],
       selectedStatus: 0,
-      dialogOpen: false,
+      dialogDetailWindowOpen: false,
+      dialogCommentOpen: false,
       details: [],
       rawItems: [],
-      idVendorEdi: 0
+      idVendorEdi: 0,
+      selectedItem: null,
+      comment: '',
+      commentFeedback: null
     }
   },
   computed: {
@@ -107,17 +130,35 @@ export default {
       return '';
     },
     closeDialog() {
-      this.dialogOpen = false;
-			this.loadEdiInfo();
+      this.dialogDetailWindowOpen = false;
+      this.loadEdiInfo();
     },
     loadDetail(idVendorEdi) {
       this.idVendorEdi = idVendorEdi;
-      this.dialogOpen = true;
+      this.dialogDetailWindowOpen = true;
       this.$post('api/Transaction/GetAllEdiInfoDetail', idVendorEdi).then(d => this.details = d);
     },
-		loadEdiInfo(){
-			this.$post('api/Transaction/GetAllEdiInfo').then(d => this.rawItems = d);
-		}
+    loadEdiInfo() {
+      this.$post('api/Transaction/GetAllEdiInfo').then(d => this.rawItems = d);
+    },
+    openDialogComment(item) {
+      this.dialogCommentOpen = true;
+      this.selectedItem = item;
+    },
+    sendComment() {
+      this.commentFeedback = null;
+      this.$post('api/Transaction/UpdateEdiComments', {
+        idVendorEdi: this.selectedItem.idVendorEdi,
+        comments: this.comment
+      }).then(d => {
+        if (d) {
+          this.commentFeedback = d;
+        } else {
+          this.comment = '';
+          this.dialogCommentOpen = false;
+        }
+      });
+    }
   },
   mounted() {
     this.$post('api/Common/GetReleaseTypes').then(d => this.releaseTypesRaw = d);

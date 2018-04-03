@@ -190,6 +190,12 @@ table.table tbody th {
 h1 {
 	color: #0072c6;
 }
+h2 {
+	color: #0072c6;
+}
+h3 {
+	color: #0072c6;
+}
 
 .titleBar {
 	padding-left: 16px;

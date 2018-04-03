@@ -4,13 +4,15 @@ export default{
 		from: 'From',
 		to: 'To',
 		cancel: 'Cancel',
-		continue: 'Continue'
+		continue: 'Continue',
+		send: 'Send'
 	},
 	esp: {
 		all: 'Todos',
 		from: 'Desde',
 		to: 'Hasta',
 		cancel: 'Cancelar',
-		continue: 'Continuar'
+		continue: 'Continuar',
+		send: 'Enviar'
 	}
 };
