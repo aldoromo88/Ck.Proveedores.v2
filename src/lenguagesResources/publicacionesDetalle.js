@@ -14,7 +14,7 @@ export default {
 			{text: '# Part', value: 'partNumber', align: 'left'},
 			{text: 'Description', value: 'description', align: 'left'},
 			{text: 'Snp', value: 'snp', align: 'left'},
-			{text: 'Required Date', value: 'requiredDate', align: 'left'},
+			{text: 'Due Date', value: 'requiredDate', align: 'left'},
 			{text: 'Unit of Measure', value: 'unitOfMeasure', align: 'left'},
 			{text: 'Ran', value: 'ran', align: 'left'},
 			{text: 'PO', value: 'purchaseOrder', align: 'left'},
@@ -25,7 +25,7 @@ export default {
 			{text: 'Transit Qty', value: 'transitQuantity', align: 'left'},
 			{text: 'Confirmed Qty', value: 'confirmedQuantity', align: 'left'},
 			{text: 'Difference Qty', value: 'differenceQuantity', align: 'left'},
-			{text: 'Error', value: 'error', align: 'left'}
+			{text: 'Error ASN', value: 'error', align: 'left'}
 		]
 	},
 	esp: {
@@ -43,7 +43,7 @@ export default {
 			{text: '# Parte', value: 'partNumber', align: 'left'},
 			{text: 'Descripción', value: 'description', align: 'left'},
 			{text: 'Snp', value: 'snp', align: 'left'},
-			{text: 'Fecha Solicitud', value: 'requiredDate', align: 'left'},
+			{text: 'Due Date', value: 'requiredDate', align: 'left'},
 			{text: 'Unidad de medida', value: 'unitOfMeasure', align: 'left'},
 			{text: 'Ran', value: 'ran', align: 'left'},
 			{text: 'OC', value: 'purchaseOrder', align: 'left'},
@@ -52,9 +52,9 @@ export default {
 			{text: 'Comentarios', value: 'specialOrderComment', align: 'left'},
 			{text: 'Ctd Requirida', value: 'requiredQuantity', align: 'left'},
 			{text: 'Ctd Tránsito', value: 'transitQuantity', align: 'left'},
-			{text: 'Ctd Confirmada', value: 'confirmedQuantity', align: 'left'},
+			{text: 'Ctd Recibida CKMX', value: 'confirmedQuantity', align: 'left'},
 			{text: 'Ctd Diferencia', value: 'differenceQuantity', align: 'left'},
-			{text: 'Error', value: 'error', align: 'left'}
+			{text: 'Error ASN', value: 'error', align: 'left'}
 		]
 	}
 };

@@ -1,6 +1,5 @@
 <template>
 <v-app>
-
 	<v-navigation-drawer v-if="user" fixed clipped app permanent :mini-variant.sync="mini" class="leftMenu" dark>
 		<v-toolbar flat class="transparent">
 			<v-list class="pa-0">

@@ -118,6 +118,18 @@ import { required } from '@/helpers/validationHelpers';
 
 
 
+const orderBy = name=>{
+  return function (a, b){
+    if(a[name]> b[name]){
+      return 1;
+    }
+    if(a[name]< b[name]){
+      return -1;
+    }
+    return 0;
+  }
+}
+
 const d = new Date();
 const today = (d.getFullYear() * 10000) + (d.getMonth() + 1) * 100 + d.getDate()
 
@@ -223,12 +235,52 @@ export default {
       this.filter.purchaseOrder = null;
     },
     createShipment() {
+      let purchaseOrders = {};
+
+      //Convertir valores de input text a enteros, y agrupar por purchase order
+      const detail = this.detailsRaw.map(c=>{
+        const d = {...c}
+
+        purchaseOrders[d.purchaseOrder] = purchaseOrders[d.purchaseOrder] || [];
+
+        d.quantityToShip = parseInt(d.quantityToShip);
+        d.snp = parseInt(d.snp);
+        d.pendingToShip = parseInt(d.pendingToShip);
+
+        purchaseOrders[d.purchaseOrder].push(d);
+        return d;
+      })
+
+
+      //De cada purchase order ordenar por numero de linea
+      const purchaseOrdersLines = Object.values(purchaseOrders);
+      for (var i = 0; i < purchaseOrdersLines.length; i++) {
+        const lines =  purchaseOrdersLines[i];
+        lines.sort(orderBy('line'));
+
+        let lineIncomplete = false;
+        for (var j = 0; j < lines.length; j++) {
+          const line = lines[j];
+          //console.log(`Incomplete: ${lineIncomplete}  PO:${line.purchaseOrder} Line:${line.line} Pending:${line.pendingToShip} Qty${line.quantityToShip}`)
+          if(lineIncomplete && line.quantityToShip>0){
+            this.feedbackMessage = `#${line.partNumber} Line ${line.line} : ${this.resources.poLineIncomplete}`;
+            return;
+          }
+
+          if(line.pendingToShip>line.quantityToShip){
+            lineIncomplete = true;
+          }
+        }
+      }
+
+
+
       const data = {
         tentativeDeliveryDate: this.deliveryDate,
         shippingDate: this.shipmentDate,
         invoice: this.invoice,
         shippingTo: this.facility,
-        detail: this.detailsRaw.filter(d => parseInt(d.quantityToShip) > 0)
+        detail: detail.filter(d => parseInt(d.quantityToShip) > 0)
       }
 
       this.feedbackType = 'info'
