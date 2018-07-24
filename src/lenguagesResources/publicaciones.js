@@ -8,6 +8,7 @@ export default {
 		type: 'Release Type',
 		status: 'Status',
 		statuses: [{id: 0, name: 'All'}, {id: 1, name: 'New'}, {id: 2, name: 'Readed'}],
+		commentsForRelease: 'Comments for release',
 		headers: [
 			{text: 'Type', value: 'idEdiType', align: 'left'},
 			{text: '#', value: 'releaseNumber', align: 'left'},
@@ -22,6 +23,7 @@ export default {
 		type: 'Tipo de Publicación',
 		status: 'Estatus',
 		statuses: [{id: 0, name: 'Todos'}, {id: 1, name: 'Nuevo'}, {id: 2, name: 'Leido'}],
+		commentsForRelease: 'Comentarios para firme',
 		headers: [
 			{text: 'Tipo', value: 'idEdiType', align: 'left'},
 			{text: '#', value: 'releaseNumber', align: 'left'},

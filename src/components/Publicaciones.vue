@@ -34,7 +34,7 @@
     <v-dialog v-if="selectedItem" v-model="dialogCommentOpen" width="500">
       <v-card>
         <v-card-title>
-          <h3>Comentarios para Firme {{selectedItem.releaseNumber}}</h3>
+          <h3>{{resources.commentsForRelease}} {{selectedItem.releaseNumber}}</h3>
         </v-card-title>
         <v-card-text>
           <div style="height:120px; position:relative" class="ml-3 mr-3">
