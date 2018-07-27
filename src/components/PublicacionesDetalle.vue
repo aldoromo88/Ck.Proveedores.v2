@@ -109,7 +109,8 @@ export default {
 
 			fileSaver.saveAs(new Blob([wbout], {
 				type: 'application/octet-stream'
-			}), 'Data.xlsx')
+			}), 'Data.xlsx');
+			this.$post('api/Transaction/UpdateEdiFileDownload', this.idVendorEdi);
 		},
 		downloadCsv() {
 			let csvContent = "";
@@ -122,6 +123,7 @@ export default {
 				type: "data:text/csv;charset=utf-8"
 			});
 			fileSaver.saveAs(file);
+			this.$post('api/Transaction/UpdateEdiFileDownload', this.idVendorEdi);
 		},
 		downloadEdi() {
 			if (!this.hasPermissionToEdi) {
@@ -129,6 +131,7 @@ export default {
 			}
 			this.$get(`api/Transaction/GetEdiDocument?idVendorEdi=${this.idVendorEdi}`)
 				.then(d => fileSaver.saveAs(d, 'data.edi'))
+				.then(()=> this.$post('api/Transaction/UpdateEdiFileDownload', this.idVendorEdi))
 				.catch(e => {
 					console.log(e);
 				});

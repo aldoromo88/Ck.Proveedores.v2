@@ -333,10 +333,7 @@ export default {
 			const fileName = `${today}${new Date().toLocaleTimeString().replace(/:/g,'')}.xlsx`;
 
 			this.$downloadFile(`api/Transaction/GetOpenLines?idVendorCode=${this.$store.getters.User.IdUser}`)
-				.then(d => {
-					debugger;
-					console.log(d);
-					fileSaver.saveAs(d, fileName)})
+				.then(d => fileSaver.saveAs(d, fileName))
 				.catch(e => console.log(e));
 		}
 	},
