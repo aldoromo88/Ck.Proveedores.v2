@@ -123,7 +123,12 @@ export default {
 				return;
 			}
 			this.$get(`api/Transaction/GetEdiDocument?idVendorEdi=${this.idVendorEdi}`)
-				.then(d => fileSaver.saveAs(d, 'data.edi'))
+				.then((d) => {
+					const file = new File([d], "data.edi", {
+						type: "data:text;charset=utf-8"
+					});
+					fileSaver.saveAs(file)
+				})
 				.then(()=> this.$post('api/Transaction/UpdateEdiFileDownload', this.idVendorEdi))
 				.catch(e => {
 					console.log(e);
